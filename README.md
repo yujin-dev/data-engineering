@@ -8,3 +8,4 @@
 - Postgresql: https://github.com/yujin-dev/Log-Note/blob/master/Postgresql-note.md
 - Windows-monitoring: https://github.com/yujin-dev/Log-Note/blob/master/Windows-monitoring-note.md
 - Python: https://github.com/yujin-dev/Log-Note/blob/master/Python-note.md
+- Memory: https://github.com/yujin-dev/Log-Note/blob/master/Memory-note.md
