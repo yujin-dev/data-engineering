@@ -1,8 +1,4 @@
----
-title: "Docker BlahBlah"
-category: "docker-kubernetes"
----
-
+# Docker Note
 ## [ 21.07.16 ] 도커 설치
 ```console
 $ sudo apt update

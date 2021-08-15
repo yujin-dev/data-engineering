@@ -1,8 +1,4 @@
----
-title: "Elasticsearch BlahBlah"
-category: "search_engine"
----
-
+# Elasticsearch Note
 ## [ 21.07.30 ] 도커로 설치
 1. elk 설치
 ```consle

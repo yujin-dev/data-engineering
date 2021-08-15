@@ -1,9 +1,4 @@
----
-title: "MySQL BlahBlah"
-category: "db"
----
-
-
+# MySQL Note
 ## [ 21.07.22 ] 도커로 설치
 1. MySQL 도커 이미지를 다운받는다. 뒤에 버전 명시(mysql:8.0.22) 를 안하면 자동으로 최신 버전을 가져온다. 
 ```console

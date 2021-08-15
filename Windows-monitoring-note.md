@@ -1,8 +1,4 @@
----
-title: "Window 성능 모니터"
-category: "system"
----
-
+# Windows Performance Monitoring 
 ## 성능 모니터 기록하기
 - https://nogan.tistory.com/17
 - https://sagittariusof85s.tistory.com/82

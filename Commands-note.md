@@ -1,11 +1,4 @@
----
-title: "Commands"
----
-
----
-title: "2021.07.21"
-category: "til"
----
+# Commands Note
 
 ## [ 21.07.21 ] linux 파일/폴더 복사
 ### 원격 복사
