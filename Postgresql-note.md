@@ -200,3 +200,28 @@ PostgreSQL 서버의 최대 connection 갯수는 크게 설정되지 않고 clie
 #### 참고 
 - https://sondahum.tistory.com/21  
 - https://blog.lael.be/post/3056
+
+## [ 21.08.28 ] WAL in PostgreSQL
+DBMS에서 데이터는 RAM에 저장된 후 비동기적으로 disk에 쓰여진다. 하지만 DBMS나 OS에 이상이 생기면 데이터가 증발할 수 있어 이를 방지하기 위해 Write-ahead logging(WAL)을 사용한다.
+
+buffer cache는 RAM에 저장되는 구조이다. buffer cache를 통해 RAM과 disk에 접슨하는 시간 차이를 줄인다.
+
+OS에서도 disk cache를 사용하는데 buffer cache는 disk에 직접적으로 접근하여 중복 캐싱을 피한다. 하지만 PostgreSQL에서는 모든 데이터의 read & write는 보통의 file 처리로 이루어진다.
+
+### Buffer cache
+
+#### DBMS buffer cache
+각각의 buffers는 하나의 데이터 page + header로 구성된다. header는, 
+- buffer에서 page의 위치
+- page에서 데이터 변경 사항
+- buffer의 usage count
+- buffer의 pin count
+를 포함한다.
+
+buffer cache는 서버의 공유 메모리에 위치하며 모든 프로세스에 접근 가능하다. 데이터를 이용하려면 프로세스는 cache로 page를 읽어드린다. page가 cache에 있는 동안 RAM에서 작업하여 disk에 저장한다.
+
+![] (https://habrastorage.org/r/w780/webt/az/jk/2b/azjk2b81tsv0jj1_yeb-fhv7xjm.png)
+
+cache는 처음에는 빈 buffer를 포함한다. cache의 hash table를 통해 page를 빠르게 찾도록 한다.
+
+출처:https://habr.com/en/company/postgrespro/blog/491730/
