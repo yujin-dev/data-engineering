@@ -224,4 +224,7 @@ buffer cache는 서버의 공유 메모리에 위치하며 모든 프로세스�
 
 cache는 처음에는 빈 buffer를 포함한다. cache의 hash table를 통해 page를 빠르게 찾도록 한다.
 
+#### Search for a page in the cache
+프로세스가 page를 읽을 때면 hash table을 이용해 buffer cache에서 탐색한다. 필요한 page를 찾으면 프로세스는 pin count를 증가시켜 buffer를 *pin*시킨다.  
+
 출처:https://habr.com/en/company/postgrespro/blog/491730/
