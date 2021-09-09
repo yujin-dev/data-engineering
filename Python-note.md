@@ -19,3 +19,67 @@ python에서는 python memory manager를 통해 스토리지를 동적으로 관
 +1의 raw memory allocator가 os와 소통하며 heap 영역에 메모리를 할당할 수 있는지 확인한다. 가비지 콜렉터와 같은 메커니즘으로 함수가 호출됨에 따라 그에 맞는 메모리를 필요한 순간에 할당하고 결과값이 반환되는 종료되는 시점에 메모리를 소멸한다. 
 
 출처: https://armontad-1202.tistory.com/entry/%ED%8C%8C%EC%9D%B4%EC%8D%AC%EC%9D%98-%EB%A9%94%EB%AA%A8%EB%A6%AC-%EC%98%81%EC%97%AD
+
+
+## [ 21.09.09 ]  functools.wraps
+어떤 함수의 데코레이터로 
+```python
+
+@filings_cache
+@check_filing_type
+def method():
+    pass
+```
+와 같이 쓰인다고 할 때 해당 데코레이터 함수는 아래와 같다.
+
+```python
+from edgar.util import save_cache, read_cache
+from functools import wraps
+import inspect
+import os
+from functools import wraps
+
+def check_filing_type(func):
+
+    @wraps(func) 
+    def call(*args, **kwargs):
+        core = kwargs.get("self", None)
+        if core is None:
+            core = args[0]
+        if core.submission_type == core.filing_type:
+            return func(*args, **kwargs)
+        else:
+            return None
+    return call
+
+
+def filings_cache(func):
+    signature = inspect.signature(func)
+
+    def call(*args, **kwargs):
+        bound_arguments = signature.bind(*args, **kwargs)
+        bound_arguments.apply_defaults()
+        kwargs = bound_arguments.arguments
+        core = kwargs.get("self", None)
+        ...
+        if not os.path.exists(core.file):
+            result = func(*args, **kwargs)
+            save_cache(result, filename)
+        else:
+            result = read_cache(filename)
+        return result
+
+    return call
+```
+`check_filing_type`에서 `@wraps`가 있으면 `filings_cache`의 `kwargs` - 아래와 같이 나오지만 
+```python 
+OrderedDict([('self', <edgar.parser.filing.Filing at 0x7f777aead190>),
+             ('target_date', '2019-12-31'),
+             ('date_type', 'filed')])
+
+```
+`@wraps`가 없으면 아래와 같다. 
+```python
+OrderedDict([('args', (<edgar.parser.filing.Filing at 0x7f7d8f9d71c0>,)),
+             ('kwargs', {'target_date': '2019-12-31', 'date_type': 'filed'})])
+```
