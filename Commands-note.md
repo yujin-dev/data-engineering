@@ -20,31 +20,6 @@ $ cp {복사하려는 경로} {대상 경로}
 출처: https://jframework.tistory.com/6
 
 
-## [ 21.07.21 ] python 경로 확인
-```python
-import sys
-sys.executable
-```
-
-```console
-$ python -m site
-```
-
-## [ 21.07.23 ] python 가상환경 설치
-```console
-$ virtualenv -p python3 env_name
-```
-
-
-## [ 21.07.27 ] python 가상환경 jupyter notebook 추가
-jupyter 설치할 가상환경 활성화시키고
- 
-```console
-$ pip3 install ipykernel  
-$ python3 -m ipykernel install --user --name myvenv --display-name "venv_py3.8"
-
-```
-
 ## [ 21.07.27 ] linux 파일 시간 확인
 - 접근 시간 확인: `ls-lu`
 - 수정 시간 확인: `ls-l`

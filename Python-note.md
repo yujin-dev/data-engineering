@@ -1,5 +1,30 @@
 # Python Note
 
+## [ 21.07.21 ] python 경로 확인
+```python
+import sys
+sys.executable
+```
+
+```console
+$ python -m site
+```
+
+## [ 21.07.23 ] python 가상환경 설치
+```console
+$ virtualenv -p python3 env_name
+```
+
+
+## [ 21.07.27 ] python 가상환경 jupyter notebook 추가
+jupyter 설치할 가상환경 활성화시키고
+ 
+```console
+$ pip3 install ipykernel  
+$ python3 -m ipykernel install --user --name myvenv --display-name "venv_py3.8"
+
+```
+
 ## [ 21.08.16 ] JIT 
 바이트 코드를 기계가 실행할 수 있는 형태로 변경하는데 방식은 2가지가 있다.
 - interpreter: 바이트코드 명령어를 하나씩 읽어 해석하고 실행한다. 하나씩 실행하기에 해석은 빠르나 실행 자체는 느리다는 단점이 있다. 이는 파이썬에서 적용하는 방식이다.
