@@ -1,5 +1,5 @@
 # PostgreSQL Note
-## [ 21.07.02 ] sub query 적용 비교
+## sub query 적용 비교
 postgresql에서 필터를 적용한 쿼리를 실행할 때 서브 쿼리가 포함된 경우가 더 빠를까? 보통은 서브 쿼리가 들어가면 속도가 더 느려진다.  
 아래 예시처럼 실제 시간 차이가 나는지 간단하게 확인해보았다. 현재 테이블 크기는 table1의 경우 약 4.2G로 다수의 `entity_id` 20년치 데이터가 들어있다.  
 추가적으로 Query Plan을 함께 확인하여 쿼리 동작이 어떻게 이루어지는지 확인하였다.
@@ -60,7 +60,7 @@ Successfully run. Total query runtime: 12 secs 407 msec.
 
 결과적으로 왠만하면 서브 쿼리는 적용하지 않는게 나을 것 같다..!
 
-## [ 21.07.05 ] NUMERIC data type
+## NUMERIC data type
 출처: https://www.geeksforgeeks.org/postgresql-numeric-data-type/
 
 postgresql에서  `NUMERIC` type이 지원된다. syntax는 아래와 같다. 
@@ -99,16 +99,15 @@ id | name  | price
 전체 길이 5에서 소숫점 2만큼만 반영된다.
 
 ---
-## [ 21.07.05 ] inner join vs. pandas.merge(how='inner')
+## inner join vs. pandas.merge(how='inner')
 Postgresql 서버에서 inner join을 적용하는게 나을지, python에서 데이터를 메모리에 올려 `pandas.merge`로 적용하는게 나을지 실험해보았다. 데이터를 전구간으로 한번에 쿼리 요청하면 프로세스가 죽어있는 경우가 발생하여 연도별로 나눠서 받았다.
 
-[ 21.07.14 추가 ]
 결과를 정리하면, 
 - 기존에 병합이 필요한 부분은 `pd.merge`를 적용하였는데 약 1~2 GB 데이터 받는데 대략 4060초 소요되었음. 
 - `pd.merge` 대신 PostgreSQL에서 대신 쿼리로 작업을 수행하여 `inner join`을 적용하였는데 9172초로 대략 2배 더 발생했음. 
 
 
-## [ 21.07.16 ] 도커로 설치
+## 도커로 설치
 ```console
 $ sudo docker run -p 5432:5432 --name postgres -e POSTGRES_PASSWORD={password} -d postgres
 
@@ -151,7 +150,7 @@ root@3f80d6777eeb:/ psql -h {host_name} -p 5432 -U postgres -d {db_name}
 $ docker run postgres 
 ```
 
-## [ 21.07.16 ] 성능 분석 - pgbench
+## 성능 분석 - pgbench
 pgbench는 PostgreSQL에서 제공하는 Benchmark 툴이다. `SELECT`, `INSERT`, `UPDATE` 등 명령어를 조합해서 시뮬레이션하고 이를 초당 Transaction 횟수로 성능을 평가한다.
 서버가 설치된 하드웨어 및 OS 환경에서 성능을 측정하며 postgresql.conf의 환경 변수 설정에 사용될 수 있다.
 
@@ -187,10 +186,10 @@ $ pgbench -h {host} -p 5432 -U postgres -c 8 -j 4 -t 10 pgbenchtest
 
 #### 참고: https://browndwarf.tistory.com/52
 
-## [ 21.07.23 ] Lock 파악하기
+## Lock 파악하기
 스크랩 : https://medium.com/29cm/db-postgresql-lock-%ED%8C%8C%ED%97%A4%EC%B9%98%EA%B8%B0-57d37ebe057
 
-## [ 21.07.23 ] Connection Pool deadlock 현상
+## Connection Pool deadlock 현상
 
 PostgreSQL 서버의 최대 connection 갯수는 크게 설정되지 않고 client에서 무거운 transaction으로 인한 *connection pool deadlock*이 발생하기 쉽다. 
 초창기에 무거운 transaction으로 인해 pool에 deadlock이 걸려 서비스 장애가 일어날 수 있다. pool size를 늘리고 무거운 transaction은 한번에 처리할 수 있도록 최대 갯수를 늘려 deadlock을 방지할 수 있으나 서비스 응답시간과 connection 사용량에 문제가 생긴다. 
@@ -201,7 +200,7 @@ PostgreSQL 서버의 최대 connection 갯수는 크게 설정되지 않고 clie
 - https://sondahum.tistory.com/21  
 - https://blog.lael.be/post/3056
 
-## [ 21.08.28 ] WAL in PostgreSQL
+## WAL in PostgreSQL
 DBMS에서 데이터는 RAM에 저장된 후 비동기적으로 disk에 쓰여진다. 하지만 DBMS나 OS에 이상이 생기면 데이터가 증발할 수 있어 이를 방지하기 위해 Write-ahead logging(WAL)을 사용한다.
 
 buffer cache는 RAM에 저장되는 구조이다. buffer cache를 통해 RAM과 disk에 접슨하는 시간 차이를 줄인다.

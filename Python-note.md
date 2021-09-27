@@ -1,6 +1,6 @@
 # Python Note
 
-## [ 21.07.21 ] python 경로 확인
+## python 경로 확인
 ```python
 import sys
 sys.executable
@@ -10,13 +10,13 @@ sys.executable
 $ python -m site
 ```
 
-## [ 21.07.23 ] python 가상환경 설치
+## python 가상환경 설치
 ```console
 $ virtualenv -p python3 env_name
 ```
 
 
-## [ 21.07.27 ] python 가상환경 jupyter notebook 추가
+## python 가상환경 jupyter notebook 추가
 jupyter 설치할 가상환경 활성화시키고
  
 ```console
@@ -25,7 +25,7 @@ $ python3 -m ipykernel install --user --name myvenv --display-name "venv_py3.8"
 
 ```
 
-## [ 21.08.16 ] JIT 
+## JIT 
 바이트 코드를 기계가 실행할 수 있는 형태로 변경하는데 방식은 2가지가 있다.
 - interpreter: 바이트코드 명령어를 하나씩 읽어 해석하고 실행한다. 하나씩 실행하기에 해석은 빠르나 실행 자체는 느리다는 단점이 있다. 이는 파이썬에서 적용하는 방식이다.
 - JIT : 인터프리터의 단점을 보완하기 위해 도입된 방식으로 인터프리터로 실행하다가 적절한 시점에 바이트코드 전체를 컴파일한다. 컴퓨터가 읽을 수 있는 코드로 변경하고 이 후 해당 코드가 실행될때마다 네이티브 코드로 직접 실행한다. 
@@ -33,7 +33,7 @@ $ python3 -m ipykernel install --user --name myvenv --display-name "venv_py3.8"
 
 출처: https://hamait.tistory.com/476
 
-## [ 21.08.16 ] python heap memory
+## python heap memory
 python에서는 python memory manager를 통해 스토리지를 동적으로 관리한다. 여기에는 메모리의 공유, 세분화, 사전할당, 캐싱이 있다.
 
 힙 영역의 메모리를 인터프리터가 포인터를 통해 범위를 조정한다.
@@ -46,7 +46,7 @@ python에서는 python memory manager를 통해 스토리지를 동적으로 관
 출처: https://armontad-1202.tistory.com/entry/%ED%8C%8C%EC%9D%B4%EC%8D%AC%EC%9D%98-%EB%A9%94%EB%AA%A8%EB%A6%AC-%EC%98%81%EC%97%AD
 
 
-## [ 21.09.09 ]  functools.wraps
+## functools.wraps
 어떤 함수의 데코레이터로 
 ```python
 

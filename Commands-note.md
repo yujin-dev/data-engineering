@@ -1,6 +1,6 @@
 # Commands Note
 
-## [ 21.07.21 ] linux 파일/폴더 복사
+## linux 파일/폴더 복사
 ### 원격 복사
 ```console
 $ scp {host}:{복사하려는 원격 파일경로} {폴더 위치}
@@ -20,7 +20,7 @@ $ cp {복사하려는 경로} {대상 경로}
 출처: https://jframework.tistory.com/6
 
 
-## [ 21.07.27 ] linux 파일 시간 확인
+## linux 파일 시간 확인
 - 접근 시간 확인: `ls-lu`
 - 수정 시간 확인: `ls-l`
 - 변경 시간 확인: `ls-lc`

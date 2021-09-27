@@ -1,5 +1,5 @@
 # Elasticsearch Note
-## [ 21.07.30 ] 도커로 설치
+## 도커로 설치
 1. elk 설치
 ```consle
 $ git clone https://github.com/deviantony/docker-elk.git
@@ -54,7 +54,7 @@ ES에서는 검색 프로세스가 단순히 Matching만을 의미하는 것이 
 
 또한, ES는 분산 관리 기능이 뛰어나다. 
 
-## [ 21.07.30 ] Kibana configure
+## Kibana configure
 Kibana 서버는 `kibana.yml` 설정을 기반으로 한다. 
 Elasticsearch 연동시키려면 config 에서 `elasticsearch.hosts` 접근하려는 Elasticsearch URLs 설정해야 한다.
 
