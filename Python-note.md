@@ -108,3 +108,52 @@ OrderedDict([('self', <edgar.parser.filing.Filing at 0x7f777aead190>),
 OrderedDict([('args', (<edgar.parser.filing.Filing at 0x7f7d8f9d71c0>,)),
              ('kwargs', {'target_date': '2019-12-31', 'date_type': 'filed'})])
 ```
+
+## `sqlalchemy` connection 
+
+### `sqlalchemy.engine.create_engine` 
+- `sqlalchemy`의 가장 낮은 level의 객체
+- `engine`은 어플리케이션이 DB와 통신할 때마다 사용하는 *connection pool*을 유지한다.
+- 쿼리 실행을 위한 `engine.execute`는 `engine.connect`로 Connection 객체를 얻어 실행된다.
+- **ORM을 사용하지 않는 방식**으로, 객체에 바인딩되지 않은 raw string SQL 쿼리 수행에서 이용된다.
+
+### `sqlalchemy.sessionmaker`
+- **ORM을 사용하는 경우**, 객체에 바인딩된 쿼리 실행을 위해 `sessionmaker`를 사용한다.
+- 아래와 같은 트랜잭션을 단일 작업 단위로 관리하기 좋고 python에서 Context Manager로 사용하기도 한다.
+
+```python
+from sqlalchemy import create_engine, declarative_base, sessionmaker
+from contextlib import contextmanager
+
+engine = create_engine(...)
+session = sessionmaker(bind=engine)
+Base = declarative_base()
+
+class TableUser(Base):
+    __tablename__ = 'tbl_users'
+    
+    id = Column(String(64))
+    name = Column(String(64))
+
+@contextmanager
+def session_scope():
+    # transaction 작업
+    session = Session()
+    try:
+        yield session 
+        session.commit() #  정상적인 경우
+    except:
+        session.rollback() # 오류 발생시
+        raise
+    finally:
+        session.close() # 항상 close
+        
+
+if __name__ == "__main__":
+
+    with session_scope() as session:
+        result = session.query(TableUser).filter(TableUser.name == 'mary').first()
+
+```
+
+***출처: https://planbs.tistory.com/entry/Engine%EA%B3%BC-Session-Scoped-Session***
