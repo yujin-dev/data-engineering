@@ -62,3 +62,50 @@ Elasticsearch 연동시키려면 config 에서 `elasticsearch.hosts` 접근하�
 
 --- 
 
+## Bucket Aggretations
+```sh
+GET session_logger/_search
+{
+ "aggs": {
+   "count_time": {
+     "terms": {
+       "field": "timestamp"     
+     },
+     "aggs": {
+       "session_count": {
+         "value_count": {
+           "field": "_id"
+         }
+       }
+     }
+   }
+ } 
+}
+```
+```sh
+  "aggregations" : {
+    "count_time" : {
+      "doc_count_error_upper_bound" : 0,
+      "sum_other_doc_count" : 0,
+      "buckets" : [
+        {
+          "key" : 1632924062766,
+          "key_as_string" : "2021-09-29T14:01:02.766Z",
+          "doc_count" : 22,
+          "session_count" : {
+            "value" : 22
+          }
+        },
+        {
+          "key" : 1632924002454,
+          "key_as_string" : "2021-09-29T14:00:02.454Z",
+          "doc_count" : 21,
+          "session_count" : {
+            "value" : 21
+          }
+        }
+      ]
+    }
+  }
+```
+`timestamp`를 대상으로 terms 집계하여 그룹핑하여 `_id`의 `count`하도록 한다.
