@@ -157,3 +157,4 @@ if __name__ == "__main__":
 ```
 
 ***출처: https://planbs.tistory.com/entry/Engine%EA%B3%BC-Session-Scoped-Session***
+- 참고: https://yujuwon.tistory.com/entry/SQLALCHEMY-session-%EA%B4%80%EB%A6%AC
