@@ -66,6 +66,7 @@ Elasticsearch 연동시키려면 config 에서 `elasticsearch.hosts` 접근하�
 ```sh
 GET session_logger/_search
 {
+  "size": 0, # hits": [ ] 에 불필요한 도큐먼트 내용이 나타나지 않음
  "aggs": {
    "count_time": {
      "terms": {
@@ -109,3 +110,20 @@ GET session_logger/_search
   }
 ```
 `timestamp`를 대상으로 terms 집계하여 그룹핑하여 `_id`의 `count`하도록 한다.
+
+### kibana dashboard 세팅
+
+**Dashboard - All types > Aggregation based**를 클릭하여 집계할 수 있다.
+아래와 같이 세팅하면 위의 쿼리 결과를 대시보드에서 확인할 수 있다.
+
+![](./img/kibana_dashboard_sample.png)
+
+### Timezone Issue
+**[ Issue ]** ES에 적재한 데이터 timestamp가 Kibana dashboard 에서 확인할 때가 다르게 나옴.
+
+- 기본적으로 Kibana에서는 Timezone이 Browser를 따라감
+- Elasticsearch의 기본 Timezone은 UTC 기준( timezone을 바꾸지 않기를 권장한다고 함 )
+
+=> Kibana에서 **Management > Advanced Settings > dateFormat:tz**에서 timezone을 변경할 수 있는데 UTC로 맞추면 ES와 동일한 시간대를 공유할 수 있다.
+
+*출처: https://renuevo.github.io/elastic/elastic-timezone/*
