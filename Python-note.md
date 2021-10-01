@@ -152,9 +152,27 @@ def session_scope():
 if __name__ == "__main__":
 
     with session_scope() as session:
-        result = session.query(TableUser).filter(TableUser.name == 'mary').first()
+        result = session.que    ry(TableUser).filter(TableUser.name == 'mary').first()
 
 ```
 
 ***출처: https://planbs.tistory.com/entry/Engine%EA%B3%BC-Session-Scoped-Session***
 - 참고: https://yujuwon.tistory.com/entry/SQLALCHEMY-session-%EA%B4%80%EB%A6%AC
+
+
+### `pool` 
+
+```console
+
+>>> engine.pool.status()
+'Pool size: 5  Connections in pool: 1 Current Overflow: -3 Current Checked out connections: 1'
+>>> conn2 = engine.connect()
+>>> engine.pool.status()
+'Pool size: 5  Connections in pool: 0 Current Overflow: -3 Current Checked out connections: 2'
+>>> engine.pool._pool.queue
+deque([])
+>>> engine.pool.status()
+'Pool size: 5  Connections in pool: 0 Current Overflow: 1 Current Checked out connections: 6'
+```
+
+- 참고: https://spoqa.github.io/2018/01/17/connection-pool-of-sqlalchemy.html
