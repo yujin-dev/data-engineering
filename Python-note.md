@@ -176,3 +176,13 @@ deque([])
 ```
 
 - 참고: https://spoqa.github.io/2018/01/17/connection-pool-of-sqlalchemy.html
+
+## `telegram`
+- telegram bot 생성 후 채널에 추가할시
+`/start@{bot_name}`으로 추가해야 정보를 받을 수 있음: 그냥 bot만 그룹에 추가하면 chat_id를 알 수 없음.
+- 채널에 추가 후 `https://api.telegram.org/bot{token}/getUpdates`에서 chat_id를 확인
+```
+"chat": {"id": {ID},"title":"...","type":"group","all_members_are_administrators":true},
+"date":1633425417,"text":"/start@{bot_name}","entities":[{"offset":0,"length":20,"type":"bot_command"}]
+
+```
