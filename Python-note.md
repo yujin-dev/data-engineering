@@ -186,3 +186,28 @@ deque([])
 "date":1633425417,"text":"/start@{bot_name}","entities":[{"offset":0,"length":20,"type":"bot_command"}]
 
 ```
+
+## 파이썬 외부파일 실행
+`os.system("실행파일")`
+- cmd.exe 내에서 실행하는 것과 같다.
+- 메모리에 상주한다.
+- 프로그램에 핸들을 반환하지 않아 다음으로 진행되지 않는다.
+- os 모듈이라서 cmd.exe 를 통하므로, 스레드에서 실행해야 두개 실행 가능하다.
+```python
+thread.start_new_thread(os.system, ("...",))
+thread.start_new_thread(os.system, ("...",))
+```
+`os.popen("실행파일")`
+- cmd.exe 내에서 실행하는 것과 같다.
+- 메모리에 상주한다.
+`subprocess.call("실행파일")`
+- cmd.exe 통하지 않고 바로 실행된다.
+- python.exe 통하므로 파이썬은 자식 process로 된다.
+- 프로그램에 핸들을 반환하지 않아 다음으로 진행되지 않는다.
+`ShellExecuteA()`
+- window API 이므로 ctypes 모듈로 사용해야 한다.
+- 부모 프로세스가 없이 바로 실행된다.
+```python
+ctypes.windll.shell32.ShellExecuteA(0, 'open', calc, None, None, 1)
+```
+***출처:https://blog.naver.com/PostView.naver?blogId=heennavi1004&logNo=222052800571&parentCategoryNo=&categoryNo=82&viewDate=&isShowPopularPosts=true&from=search***
