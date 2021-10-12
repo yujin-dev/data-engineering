@@ -127,3 +127,107 @@ GET session_logger/_search
 => Kibana에서 **Management > Advanced Settings > dateFormat:tz**에서 timezone을 변경할 수 있는데 UTC로 맞추면 ES와 동일한 시간대를 공유할 수 있다.
 
 *출처: https://renuevo.github.io/elastic/elastic-timezone/*
+
+
+## aggregations 
+
+**[ client_addr keyword 기준으로 전체 카운트 ]**
+```sh
+GET /session_logger/_search
+{
+  "size": 0,
+  "aggs": {
+    "client_addr_sum": {
+      "value_count": {
+        "field": "client_addr.keyword"
+      }
+    }
+  }
+  "query": {
+    "range": {
+      "timestamp": {
+        "gte": "2021-10-08T20:00:00",
+        "lte": "2021-10-08T22:00:00"
+      }
+    }
+  }
+}
+```
+**[ client_addr 집합별로 카운트 ]**
+```sh
+GET /session_logger/_search
+{
+  "size": 0,
+  "aggs": {
+   "client_addr_count": {
+     "terms": {
+       "field": "client_addr.keyword"     
+     },
+     "aggs": {
+       "session_count": {
+         "value_count": {
+           "field": "_id"
+         }
+       }
+     }
+   }
+ }, 
+  "query": {
+    "range": {
+      "timestamp": {
+        "gte": "2021-10-08T20:00:00",
+        "lte": "2021-10-08T22:00:00"
+      }
+    }
+  }
+}
+
+```
+
+## logstash 자동으로 업데이트 반영
+`docker-compose.yml`에서 아래와 같이 반영하면 로컬에서 변경된 logstash.conf사항이 자동으로 업데이트된다. logstash 컨테이너를 `restart`로 재실행한다. 
+
+
+```sh
+  logstash:
+      LS_OPTS: "--config.reload.automatic"
+```
+확인해보면 다음과 같음. 
+```console
+
+$ docker exec -it docker-elk_logstash_1 /bin/bash
+$ cat /usr/share/logstash/pipeline/logstash.conf 
+
+input {
+        tcp {
+            codec => "json"
+            port => 5000
+        }
+}
+
+filter {
+    json {
+        source => "message"
+    }
+}
+
+output {
+    stdout {
+        codec => "json"
+     }
+        elasticsearch {
+                index => "server-log"
+                hosts => ["http://elasticsearch:9200"]  # hosts 잘 확인하기
+                user => "elastic"
+                password => "hello_world"
+    }
+}
+```
+
+## python-logstash
+`logstash.conf`에서 input을 tcp로 적용하면 아래와 같이 `TCPLogstashHandler`으로 적용한다.
+```python
+    logger = logging.getLogger("server-log")
+    logger.setLevel(logging.INFO)
+    logger.addHandler(logstash.TCPLogstashHandler(config["host"], config["port"], version=1))
+```

@@ -69,3 +69,40 @@ df[column1].apply(lambda x: np.isnan(x))
 - 디스크 파일 문제 : 디스크 검사할 것
 - 하드디스크 단편화 문제 : SSD의 경우 파일 단편화 문제가 없으나 HDD 하드디스크의 경우 오랫동안 포맷하지 않으면 파일이 단편화 현상이 발생할 수 있음. 
 - 윈도우 업데이트 : 장시간 업데이트 안하면 멈춤 현상 발생할 수 있음
+
+
+### [ logstash.conf ] 수정
+
+```logstash.conf
+input {
+	tcp {
+		port => 5000
+		type => "server-log"
+	}
+}
+
+filter {
+    mutate {
+        remove_field => ["@version", "@timestamp", "host", "path"]
+    }
+}
+
+output {
+    if [type] == "server-log" {
+        elasticsearch {
+            index => "server-log"
+            hosts => ["http://elasticsearch:9200"]
+            user => "elastic"
+            password => "hello_world"
+        }
+    }
+}
+```
+위와 같이 ["@version", "@timestamp", "host", "path"]를 제거하도록 설정해도 아래와 같이 반영되지 않음. json 파싱이 제대로 이루어지지 않는 것으로 보임.
+
+```
+        "_source" : {
+          "message" : """{"@timestamp": "2021-10-12T10:43:10.379Z", "@version": "1", "message": "{'function': 'get_time_series_data', 'params': OrderedDict([('tickers', 'NASA100'), ('item', 'PI')]), 'msg': 'success', 'client': '127.0.0.1', 'timestamp': '2021-10-12 19:43:10.379770', 'level': 'info'}", "host": "engineeringcomputer", "path": "/home/leeyujin/QRAFT/datastream-soap-server/logger.py", "tags": [], "type": "logstash", "level": "INFO", "logger_name": "datastream-server", "stack_info": null}"""
+        }
+      }
+```
