@@ -227,3 +227,95 @@ cache는 처음에는 빈 buffer를 포함한다. cache의 hash table를 통해 
 프로세스가 page를 읽을 때면 hash table을 이용해 buffer cache에서 탐색한다. 필요한 page를 찾으면 프로세스는 pin count를 증가시켜 buffer를 *pin*시킨다.  
 
 출처:https://habr.com/en/company/postgrespro/blog/491730/
+
+
+## Postgresql Trigger
+Trigger은 INSERT, UPDATE, DELETE, TRUNCATE 와 같은 database event에 대해 특정 함수를 실행하도록 한다.
+trigger은 특정 테이블과 연관되어 실행된다. 
+
+### Types of Trigger
+- Row Level Trigger : `FOR EACH ROW`로 100열을 업데이트한다면 UPDATE trigger 함수가 각 열마다 100번 호출된다.
+- Statement Level Trigger : `FOR EACH STATEMENT`로 각 statement마다 한번씩 trigger 함수가 호출된다.
+
+### Creating a Trigger
+```sql
+CREATE [ CONSTRAINT ] TRIGGER name { BEFORE | AFTER | INSTEAD OF } { event [ OR ... ] }
+
+ON table_name
+
+[ FROM referenced_table_name ]
+
+[ NOT DEFERRABLE | [ DEFERRABLE ] [ INITIALLY IMMEDIATE | INITIALLY DEFERRED ] ]
+
+[ REFERENCING { { OLD | NEW } TABLE [ AS ] transition_relation_name } [ ... ] ]
+
+[ FOR [ EACH ] { ROW | STATEMENT } ]
+
+[ WHEN ( condition ) ]
+
+EXECUTE { FUNCTION | PROCEDURE } function_name ( arguments )
+
+/*
+where event can be one of:
+INSERT
+UPDATE [ OF column_name [, ... ] ]
+DELETE
+TRUNCATE
+*/
+```
+
+#### INSERT event trigger
+`INSERT`로 새로운 record가 추가되면 INSERT event trigger가 호출된다.
+
+[ example ]  
+```sql
+CREATE OR REPLACE FUNCTION trigger_ex_func()
+RETURNS trigger AS
+$$
+BEGIN
+    INSERT INTO "Employee_Audit" ( "EmployeeId", "LastName", "FirstName","UserName" ,"EmpAdditionTime")
+    VALUES(NEW."EmployeeId",NEW."LastName",NEW."FirstName",current_user,current_date);
+RETURN NEW;
+END;
+$$ 
+LANGUAGE 'plpgsql';
+
+CREATE TRIGGER trigger_insert
+    AFTER INSERT
+    ON "Employee"
+    FOR EACH ROW
+    EXECUTE PROCEDURE trigger_ex_func()
+```
+
+#### UPDATE event trigger
+[ example ]  
+```sql
+CREATE TRIGGER trigger_update
+    BEFORE UPDATE
+    ON "Employee"
+    FOR EACH ROW
+    EXECUTE PROCEDURE trigger_update_func()
+```
+
+#### DELETE event trigger
+[ example ]  
+```sql
+CREATE TRIGGER trigger_delete
+    AFTER DELETE
+    ON "Employee"
+    FOR EACH ROW
+    EXECUTE PROCEDURE trigger_delete_func()
+```
+
+
+### Dropping a Trigger 
+```sql
+DROP TRIGGER trigger_insert on "Employee";
+```
+
+### Tips
+- TRIGGER에 대한 권한이 있어야 생성 가능하다.
+- `pg_trigger` 테이블에서 존재하는 trigger를 파악할 수 있다.
+
+***출처:https://www.enterprisedb.com/postgres-tutorials/everything-you-need-know-about-postgresql-triggers***
+참고: https://www.postgresql.org/docs/9.1/sql-createtrigger.html
