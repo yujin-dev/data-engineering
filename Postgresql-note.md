@@ -390,3 +390,10 @@ CREATE TRIGGER user_changes
 - `VOLATILE`: 동일한 input에 대해 결과가 바뀌고, DB에도 변화를 줄 수 있다.
 
 *출처:https://www.enterprisedb.com/postgres-tutorials/everything-you-need-know-about-postgres-stored-procedures-and-functions*
+
+
+### Trigger Procedures
+https://www.postgresql.org/docs/9.2/plpgsql-trigger.html
+
+- NEW : RECORD 타입으로 INSERT/UPDATE, row-level trigger에서 사용
+- OLD : RECORD 타입으로 UPDATE/DELETE, row-level trigger에서 사용 
