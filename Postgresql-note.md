@@ -317,9 +317,8 @@ DROP TRIGGER trigger_insert on "Employee";
 - TRIGGER에 대한 권한이 있어야 생성 가능하다.
 - `pg_trigger` 테이블에서 존재하는 trigger를 파악할 수 있다.
 
-***출처:https://www.enterprisedb.com/postgres-tutorials/everything-you-need-know-about-postgresql-triggers***
-참고: https://www.postgresql.org/docs/9.1/sql-createtrigger.html
-
+*출처:https://www.enterprisedb.com/postgres-tutorials/everything-you-need-know-about-postgresql-triggers*  
+*참고: https://www.postgresql.org/docs/9.1/sql-createtrigger.html*
 
 ## Stored Functions
 
@@ -390,4 +389,4 @@ CREATE TRIGGER user_changes
 - `STABLE`: 동일한 input에 대해 결과가 바뀔 수 있다.
 - `VOLATILE`: 동일한 input에 대해 결과가 바뀌고, DB에도 변화를 줄 수 있다.
 
-***출처:https://www.enterprisedb.com/postgres-tutorials/everything-you-need-know-about-postgres-stored-procedures-and-functions***
+*출처:https://www.enterprisedb.com/postgres-tutorials/everything-you-need-know-about-postgres-stored-procedures-and-functions*
