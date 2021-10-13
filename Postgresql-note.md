@@ -319,3 +319,75 @@ DROP TRIGGER trigger_insert on "Employee";
 
 ***출처:https://www.enterprisedb.com/postgres-tutorials/everything-you-need-know-about-postgresql-triggers***
 참고: https://www.postgresql.org/docs/9.1/sql-createtrigger.html
+
+
+## Stored Functions
+
+### Aggregate Functions
+aggregations을 위한 함수. 
+
+[ example ]  
+조건에 따른 counts를 수행하는 경우 
+```sql
+CREATE OR REPLACE FUNCTION countif_add(current_count int, expression bool)
+RETURNS int AS
+$BODY$
+
+    SELECT CASE expression
+    WHEN true THEN
+    current_count + 1
+    ELSE
+    current_count
+    END;
+$BODY$
+LANGUAGE SQL IMMUTABLE;
+
+
+CREATE AGGREGATE count_if (boolean)
+(
+  sfunc = countif_add,
+  stype = int,
+  initcond = 0
+);
+
+```
+```sql
+SELECT count_if(age < 30)
+FROM users;
+```
+처럼 필터를 적용한 aggregate로 유용하게 사용할 수 있다.
+
+### Trigger Functions
+trigger 함수는 trigger만은 반환한다.
+
+[ example ]  
+table에 변화가 있었을 경우 변경된 rows를 기록한다.
+```sql
+CREATE FUNCTION log_user_change() RETURNS trigger
+LANGUAGE plpgsql AS
+$$
+BEGIN
+  IF NEW <> OLD THEN
+    INSERT INTO user_change_log(entry_time, entry) VALUES (now(), NEW);
+  END IF;
+  RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER user_changes
+  AFTER UPDATE ON users
+  FOR EACH ROW
+  EXECUTE PROCEDURE log_user_change();
+```
+
+이외에도 아래 2가지의 함수를 사용하는 trigger가 존재한다.
+- constraint trigger 
+- event trigger 
+
+### Functional Stability
+함수 안정성과 관련하여 아래와 같이 세팅할 수 있다.
+- `IMMUTABLE`: 동일한 input에 대해 결과가 절대 바뀌지 않는다.
+- `STABLE`: 동일한 input에 대해 결과가 바뀔 수 있다.
+- `VOLATILE`: 동일한 input에 대해 결과가 바뀌고, DB에도 변화를 줄 수 있다.
+
+***출처:https://www.enterprisedb.com/postgres-tutorials/everything-you-need-know-about-postgres-stored-procedures-and-functions***
