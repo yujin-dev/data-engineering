@@ -397,3 +397,40 @@ https://www.postgresql.org/docs/9.2/plpgsql-trigger.html
 
 - NEW : RECORD 타입으로 INSERT/UPDATE, row-level trigger에서 사용
 - OLD : RECORD 타입으로 UPDATE/DELETE, row-level trigger에서 사용 
+
+
+## Backup
+### dump 파일 생성
+```console
+$ pg_dump {dabase_name} > {sqlname}.sql
+-F c : custom format file
+-F -d : directory format file
+-F -t: tar format file 
+-f {output file}
+```
+
+### back up
+```console
+$ pg_dumpall > {sqlname}.sql
+```
+
+### restore
+[ `pg_dump`로 덤프한 경우 ]  
+```console
+$ psql {dabase_name} < {sqlname}.sql
+```
+
+[ `pgsql`로 덤프한 경우 ]  
+```console
+$ pg_restore -d {dabase_name} {dumpfile}.dump
+$ pg_restore -d {dabase_name} {dumpfile}.tar
+```
+
+### Backup LargeSize
+용량을 줄여 dump를 만들 수 있으나 DB상에 로드가 증가할 수 있음
+
+```console
+$ pg_dump {dabase_name} | gzip > {filename}.gz
+```
+*출처:https://www.tecmint.com/backup-and-restore-postgresql-database/*
+*공식문서:https://www.postgresql.org/docs/9.1/backup.html*
