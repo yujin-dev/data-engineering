@@ -434,3 +434,19 @@ $ pg_dump {dabase_name} | gzip > {filename}.gz
 ```
 *출처:https://www.tecmint.com/backup-and-restore-postgresql-database/*
 *공식문서:https://www.postgresql.org/docs/9.1/backup.html*
+
+
+### [ example ] 
+```console
+$ pg_dump -Fc -d mydb -U myuser -f /tmp/db.dump
+```
+
+파일 포멧에 따라 확장자는 다르게 설정하는 것이 권장된다.
+```console
+$ pg_dump -Fp -d mydb -f /tmp/db.sql
+$ pg_dump -Fc -d mydb -f /tmp/db.dump
+$ pg_dump -Ft -d mydb -f /tmp/db.tar
+$ pg_dump -Fd -d mydb -f /tmp/dumpdir
+```
+
+*출처:https://m.blog.naver.com/anytimedebug/221222479261*
