@@ -441,7 +441,9 @@ Password:
 ### `psql` 
 - 텍스트 덤프 파일을 대상으로 한다.
 - `pg_dump`, `pg_dumpall`로 백업한 경우 적용한다. 
-
+```console
+$ psql -h {host} -p {port} -U username -f backupfile
+```
 *출처*
 - https://m.blog.naver.com/anytimedebug/221222479261*
 - https://www.tecmint.com/backup-and-restore-postgresql-database/*
