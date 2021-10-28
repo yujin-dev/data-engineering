@@ -116,3 +116,13 @@ output {
 host    all             all             0.0.0.0/0                 md5
 ```
 추가하여 해결
+
+
+### [ python-mysql 설치 ] OSError: mysql_config not found
+`pip install mysqlclient`에서 오류 발생 
+```console
+$ sudo apt-get install libmysqlclient-dev
+```
+설치하여 해결
+
+출처: https://samplenara.tistory.com/19
