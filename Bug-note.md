@@ -106,3 +106,13 @@ output {
         }
       }
 ```
+
+### [ Postgresql ] psql: 오류: 치명적오류:  호스트 "...", 사용자 "postgres", 데이터베이스 "postgres", SSL 중지 연결에 대한 설정이 pg_hba.conf 파일에 없습니다.
+`pg_hba.conf`에 
+
+```
+# IPv4 local connections:
+..
+host    all             all             0.0.0.0/0                 md5
+```
+추가하여 해결
