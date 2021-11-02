@@ -126,3 +126,10 @@ $ sudo apt-get install libmysqlclient-dev
 설치하여 해결
 
 출처: https://samplenara.tistory.com/19
+
+
+### sqlalchemy.exc.OperationalError: (MySQLdb._exceptions.OperationalError) (2002, "Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)")
+```
+Use "127.0.0.1", instead of "localhost"
+```
+출처: https://stackoverflow.com/questions/18150858/operationalerror-2002-cant-connect-to-local-mysql-server-through-socket-v
