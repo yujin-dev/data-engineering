@@ -400,37 +400,56 @@ https://www.postgresql.org/docs/9.2/plpgsql-trigger.html
 
 
 ## Backup
-### dump 파일 생성
+### `pg_dump`
+하나의 데이터베이스만 백업을 대상으로 한다. 
+데이터 압축, 분할 및 커스텀 설정이 가능하다.
 ```console
-$ pg_dump {dabase_name} > {sqlname}.sql
--F c : custom format file
--F -d : directory format file
--F -t: tar format file 
--f {output file}
+$ pg_dump -Fc -d mydb -U myuser -f /tmp/db.dump
 ```
 
-### back up
+파일 포멧에 따라 확장자는 다르게 설정하는 것이 권장된다.
 ```console
-$ pg_dumpall > {sqlname}.sql
-```
-
-### restore
-[ `pg_dump`로 덤프한 경우 ]  
-```console
-$ psql {dabase_name} < {sqlname}.sql
-```
-
-[ `pgsql`로 덤프한 경우 ]  
-```console
-$ pg_restore -d {dabase_name} {dumpfile}.dump
-$ pg_restore -d {dabase_name} {dumpfile}.tar
+$ pg_dump -Fp -d mydb -f /tmp/db.sql
+$ pg_dump -Fc -d mydb -f /tmp/db.dump  # custom format file
+$ pg_dump -Ft -d mydb -f /tmp/db.tar # tar format file 
+$ pg_dump -Fd -d mydb -f /tmp/dumpdir #  directory format file
 ```
 
 ### Backup LargeSize
-용량을 줄여 dump를 만들 수 있으나 DB상에 로드가 증가할 수 있음
+용량을 줄여 dump를 만들 수 있으나 DB상에 로드가 증가할 수 있다.
 
 ```console
 $ pg_dump {dabase_name} | gzip > {filename}.gz
 ```
-*출처:https://www.tecmint.com/backup-and-restore-postgresql-database/*
-*공식문서:https://www.postgresql.org/docs/9.1/backup.html*
+
+### `pg_dumpall`
+데이터베이스 전체를 백업할 때 사용한다. role이나 tablespace 백업 이 가능하다.
+```console
+$ pg_dumpall > {sqlname}.sql
+$ pg_dumpall -h {hostname} -p {port} -U {user} --file={filename}.sql
+Password: 
+Password: 
+Password: 
+...
+```
+매 데이터베이스를 백업할 때 인증을 요구한다. 
+
+### `restore`
+- 텍스트가 아닌 덤프 파일을 대상으로 한다. 
+- `pg_dump`로 백업한 경우 적용한다.( `pg_dumpall`은 불가 )
+
+### `psql` 
+- 텍스트 덤프 파일을 대상으로 한다.
+- `pg_dump`, `pg_dumpall`로 백업한 경우 적용한다. 
+```console
+$ psql -h {host} -p {port} -U username -f backupfile
+```
+*출처*
+- https://m.blog.naver.com/anytimedebug/221222479261*
+- https://www.tecmint.com/backup-and-restore-postgresql-database/*
+
+*참고*
+- https://www.postgresql.org/docs/13/app-pg-dumpall.html
+- https://www.enterprisedb.com/postgresql-database-backup-recovery-what-works-wal-pitr
+- https://bylee5.tistory.com/73
+- https://www.postgresql.org/docs/9.1/backup.html*

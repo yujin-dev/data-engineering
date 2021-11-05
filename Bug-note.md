@@ -106,3 +106,30 @@ output {
         }
       }
 ```
+
+### [ Postgresql ] psql: 오류: 치명적오류:  호스트 "...", 사용자 "postgres", 데이터베이스 "postgres", SSL 중지 연결에 대한 설정이 pg_hba.conf 파일에 없습니다.
+`pg_hba.conf`에 
+
+```
+# IPv4 local connections:
+..
+host    all             all             0.0.0.0/0                 md5
+```
+추가하여 해결
+
+
+### [ python-mysql 설치 ] OSError: mysql_config not found
+`pip install mysqlclient`에서 오류 발생 
+```console
+$ sudo apt-get install libmysqlclient-dev
+```
+설치하여 해결
+
+출처: https://samplenara.tistory.com/19
+
+
+### sqlalchemy.exc.OperationalError: (MySQLdb._exceptions.OperationalError) (2002, "Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)")
+```
+Use "127.0.0.1", instead of "localhost"
+```
+출처: https://stackoverflow.com/questions/18150858/operationalerror-2002-cant-connect-to-local-mysql-server-through-socket-v
