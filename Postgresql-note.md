@@ -61,7 +61,7 @@ Successfully run. Total query runtime: 12 secs 407 msec.
 결과적으로 왠만하면 서브 쿼리는 적용하지 않는게 나을 것 같다..!
 
 ## NUMERIC data type
-출처: https://www.geeksforgeeks.org/postgresql-numeric-data-type/
+*[출처] https://www.geeksforgeeks.org/postgresql-numeric-data-type/*
 
 postgresql에서  `NUMERIC` type이 지원된다. syntax는 아래와 같다. 
 
@@ -184,7 +184,7 @@ $ pgbench -h {host} -p 5432 -U postgres -c 8 -j 4 -t 10 pgbenchtest
 
 튜닝 시에 postgresql.conf 인자 변경 및 pgbench 수행을 반복해야 하는 번거로움이 있다. 여러 변수를 테스트하려면 테스트할 시나리오로 자동화 테스트를 진행해야 할 것 같다.
 
-#### 참고: https://browndwarf.tistory.com/52
+*[참고]*  https://browndwarf.tistory.com/52
 
 ## Lock 파악하기
 스크랩 : https://medium.com/29cm/db-postgresql-lock-%ED%8C%8C%ED%97%A4%EC%B9%98%EA%B8%B0-57d37ebe057
@@ -196,37 +196,15 @@ PostgreSQL 서버의 최대 connection 갯수는 크게 설정되지 않고 clie
 
 해결 방안 제시 : https://medium.com/@hyeonjay.kim/postgresql-%EC%B4%88%EB%B3%B4%EB%A5%BC-%EC%9C%84%ED%95%9C-%EA%B0%80%EC%9D%B4%EB%93%9C-%EC%BF%BC%EB%A6%AC-%EC%BB%A4%EB%84%A5%EC%85%98-%ED%92%80-%EA%B7%B8%EB%A6%AC%EA%B3%A0-%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%9D%91%EB%8B%B5%EC%8B%9C%EA%B0%84-%EC%B5%9C%EC%A0%81%ED%99%94%ED%95%98%EA%B8%B0-917352a2a19a
 
-#### 참고 
+*[참고]* 
 - https://sondahum.tistory.com/21  
 - https://blog.lael.be/post/3056
 
 ## WAL in PostgreSQL
-DBMS에서 데이터는 RAM에 저장된 후 비동기적으로 disk에 쓰여진다. 하지만 DBMS나 OS에 이상이 생기면 데이터가 증발할 수 있어 이를 방지하기 위해 Write-ahead logging(WAL)을 사용한다.
+[visit related](https://github.com/yujin-dev/CS-base/blob/master/Database.md)
+PostgreSQL에서는 모든 데이터의 read & write는 보통의 file 처리로 이루어진다.
 
-buffer cache는 RAM에 저장되는 구조이다. buffer cache를 통해 RAM과 disk에 접슨하는 시간 차이를 줄인다.
-
-OS에서도 disk cache를 사용하는데 buffer cache는 disk에 직접적으로 접근하여 중복 캐싱을 피한다. 하지만 PostgreSQL에서는 모든 데이터의 read & write는 보통의 file 처리로 이루어진다.
-
-### Buffer cache
-
-#### DBMS buffer cache
-각각의 buffers는 하나의 데이터 page + header로 구성된다. header는, 
-- buffer에서 page의 위치
-- page에서 데이터 변경 사항
-- buffer의 usage count
-- buffer의 pin count
-를 포함한다.
-
-buffer cache는 서버의 공유 메모리에 위치하며 모든 프로세스에 접근 가능하다. 데이터를 이용하려면 프로세스는 cache로 page를 읽어드린다. page가 cache에 있는 동안 RAM에서 작업하여 disk에 저장한다.
-
-![] (https://habrastorage.org/r/w780/webt/az/jk/2b/azjk2b81tsv0jj1_yeb-fhv7xjm.png)
-
-cache는 처음에는 빈 buffer를 포함한다. cache의 hash table를 통해 page를 빠르게 찾도록 한다.
-
-#### Search for a page in the cache
-프로세스가 page를 읽을 때면 hash table을 이용해 buffer cache에서 탐색한다. 필요한 page를 찾으면 프로세스는 pin count를 증가시켜 buffer를 *pin*시킨다.  
-
-출처:https://habr.com/en/company/postgrespro/blog/491730/
+*[출처] https://habr.com/en/company/postgrespro/blog/491730/*
 
 
 ## Postgresql Trigger
@@ -317,8 +295,8 @@ DROP TRIGGER trigger_insert on "Employee";
 - TRIGGER에 대한 권한이 있어야 생성 가능하다.
 - `pg_trigger` 테이블에서 존재하는 trigger를 파악할 수 있다.
 
-*출처:https://www.enterprisedb.com/postgres-tutorials/everything-you-need-know-about-postgresql-triggers*  
-*참고: https://www.postgresql.org/docs/9.1/sql-createtrigger.html*
+*[출처] https://www.enterprisedb.com/postgres-tutorials/everything-you-need-know-about-postgresql-triggers*  
+*[참고] https://www.postgresql.org/docs/9.1/sql-createtrigger.html*
 
 ## Stored Functions
 
@@ -389,7 +367,7 @@ CREATE TRIGGER user_changes
 - `STABLE`: 동일한 input에 대해 결과가 바뀔 수 있다.
 - `VOLATILE`: 동일한 input에 대해 결과가 바뀌고, DB에도 변화를 줄 수 있다.
 
-*출처:https://www.enterprisedb.com/postgres-tutorials/everything-you-need-know-about-postgres-stored-procedures-and-functions*
+*[출처] https://www.enterprisedb.com/postgres-tutorials/everything-you-need-know-about-postgres-stored-procedures-and-functions*
 
 
 ### Trigger Procedures
@@ -444,12 +422,158 @@ Password:
 ```console
 $ psql -h {host} -p {port} -U username -f backupfile
 ```
-*출처*
+*[출처]*
 - https://m.blog.naver.com/anytimedebug/221222479261*
 - https://www.tecmint.com/backup-and-restore-postgresql-database/*
 
-*참고*
+*[참고]*
 - https://www.postgresql.org/docs/13/app-pg-dumpall.html
 - https://www.enterprisedb.com/postgresql-database-backup-recovery-what-works-wal-pitr
 - https://bylee5.tistory.com/73
 - https://www.postgresql.org/docs/9.1/backup.html*
+
+
+## Lock
+
+### Read lock — AccessShareLock
+```sql
+A1018 > begin; select * from item;
+ id |  name               | selected
+----+---------------------+----------
+  1 | Mary    |     0
+(1 rows)
+
+B1010 > begin; select * from item;
+ id |  name               | selected
+----+---------------------+----------
+  1 | Mary    |     0
+(1 rows)
+```
+
+`Begin`을 통해 이후의 쿼리문이 Transaction으로 묶여서 `commit` 또는 `rollback`을 할 때까지 DB에 반영되지 않는다.
+
+postgresql에서는 `pg_catalog` 스키마에서 메타 정보를 관리하는데 `pg_locks`에서 현재 transaction에 있는 lock 정보를 제공한다.
+```sql
+Monitor> select locktype, relation::regclass, mode, transactionid tid, pid, granted from pg_catalog.pg_locks where not pid=pg_backend_pid();
+
+locktype    | relation  |      mode       | tid | pid  | granted
+------------+-----------+-----------------+-----+------+---------
+ relation   | item_pk   | AccessShareLock |     | 1010 | t
+ relation   | item      | AccessShareLock |     | 1010 | t
+ virtualxid |           | ExclusiveLock   |     | 1010 | t
+ relation   | item_pk   | AccessShareLock |     | 1018 | t
+ relation   | item      | AccessShareLock |     | 1018 | t
+ virtualxid |           | ExclusiveLock   |     | 1018 | t
+(6 rows)
+```
+`AccessShareLock`은 Read Lock으로 `select`문으로 잡히는데 granted = t로 해당 요청이 승인되었음을 알 수 있다.
+모든 트랜젝션은 `virtualxid`에 `ExclusiveLock`을 잡고 있다.
+
+### Write Lock — RowExclusiveLock
+A1018가 B1010보다 먼저 item을 선택한 상황이다.
+
+```sql
+A1018 > update item set selected=selected+1 where id=1;
+UPDATE 1
+B1010> select * from item;
+ id |  name               | selected
+----+---------------------+----------
+  1 | Mary    |     1
+(1 rows)
+```
+
+```sql
+locktype       |relation|       mode       | tid  | pid  |ranted
+---------------+---------+-----------------+------+------+-------
+ relation      | item_pk | AccessShareLock  |      | 1010 | t
+ relation      | item    | AccessShareLock  |      | 1010 | t
+ virtualxid    |         | ExclusiveLock    |      | 1010 | t    
+ relation      | item_pk | AccessShareLock  |      | 1018 | t
+ relation      | item    | AccessShareLock  |      | 1018 | t
+ virtualxid    |         | ExclusiveLock    |      | 1018 | t
+ -------------------------------------------------------------
+ relation      | item_pk | RowExclusiveLock |      | 1018 | t
+ relation      | item    | RowExclusiveLock |      | 1018 | t
+ transactionid |         | ExclusiveLock    | 5659 | 1018 | t
+(9 rows)
+```
+`RowExclusiveLock`은 Write Lock으로 `update`, `delete`, `insert`문에서 잡힌다. 배타적인 잠금으로 데이터를 수정할 때 
+다른 사람이 동시에 바꿀 수 없도록 쓰기 잠금을 걸고 끝나면 해제한다.
+
+마지막의 `transactionid |         | ExclusiveLock    | 5659 | 1018 | t` 은 DB 상태를 변경하려는 모든 트랜젝션에 부여되는 id로 트랜젝션이 종료될 때까지 유지된다.
+
+### Race Condition — ShareLock
+A1018와 B1010가 동시에 item을 선택한 상황이다.
+```sql
+B1010> update item set selected=selected+1 where id=1;
+```
+
+```sql
+locktype       | relation  |       mode       | tid  | pid  |granted
+---------------+-----------+------------------+------+------+-------
+ relation      | item_pk   | AccessShareLock  |      | 1010 | t
+ relation      | item_pk   | RowExclusiveLock |      | 1010 | t
+ relation      | item      | AccessShareLock  |      | 1010 | t
+ relation      | item_pk   | AccessShareLock  |      | 1018 | t
+ relation      | item_pk   | RowExclusiveLock |      | 1018 | t
+ relation      | item      | AccessShareLock  |      | 1018 | t
+ relation      | item      | RowExclusiveLock |      | 1018 | t
+ virtualxid    |           | ExclusiveLock    |      | 1018 | t
+ transactionid |           | ExclusiveLock    | 5659 | 1018 | t
+ relation      | item      | RowExclusiveLock |      | 1010 | t
+ tuple         | item      | ExclusiveLock    |      | 1010 | t
+ virtualxid    |           | ExclusiveLock    |      | 1010 | t
+ transactionid |           | ExclusiveLock    | 5660 | 1010 | t
+ transactionid |           | ShareLock        | 5659 | 1010 | f
+(14 rows)
+```
+
+`ShareLock`은 동시에 데이터를 변경할 때 먼저 lock을 잡은 transactionid에 공유를 요청하는 lock이다. A가 먼저 ExclusiveLock을 잡아 ShareLock과 충돌되어 lock이 승인되지 않았다.
+이에 따라 ExclusiveLock을 해제할 때까지 B의 요청은 대기된다.
+
+여기서 `pg_stat_activity`을 확인하면
+```sql
+Monitor> SELECT query,state,pid FROM pg_catalog.pg_stat_activity;
+                   query                      |    state          | pid
+----------------------------------------------+-------------------+----
+update item set selected=selected+1 where id=1|active             |1010
+update item set selected=selected+1 where id=1|idle in transaction|1018
+(2 rows)
+```
+A1018의 쿼리는 실행이 완료되어 트랜젝션이 끝나길 기다리기 떄문에 `idle in transaction`이고, 
+B1010는 A1018의 트랜젝션이 완료되길 기다리기에 `active` 상태이다.
+
+이 때 A1018가 `commit`이나 `rollback`을 하게 되면
+```sql
+A1018> commit;
+COMMIT
+B1010>
+UPDATE 1
+B1010> select * from item;
+ id |  name               | selected
+----+---------------------+----------
+  1 | tears of goddess    |     1
+(1 rows)
+```
+A1018의 트랜젝션이 종료되면 B1010의 대기 중인 쿼리가 실행된다.
+
+```sql
+locktype       | relation  |       mode     | tid  | pid  | granted
+------------- -+-----------+------------------+------+------+-------
+ virtualxid    |           | ExclusiveLock    |      | 1010 | t
+ relation      | item_pk   | AccessShareLock  |      | 1010 | t
+ relation      | item      | AccessShareLock  |      | 1010 | t
+ relation      | item_pk   | RowExclusiveLock |      | 1010 | t
+ relation      | item      | RowExclusiveLock |      | 1010 | t
+ transactionid |           | ExclusiveLock    | 5660 | 1010 | t
+(6 rows)
+```
+
+### Explicit Locking
+- Table Lock - AccessExclusiveLock
+테이블 전체 lock
+
+- RowLock — RowShareLock
+`SELECT FOR UPDATE`으로 쓰기 잠금을 걸이 row변경을 막음
+
+*[출처] https://medium.com/29cm/db-postgresql-lock-%ED%8C%8C%ED%97%A4%EC%B9%98%EA%B8%B0-57d37ebe057*
