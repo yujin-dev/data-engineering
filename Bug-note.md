@@ -39,7 +39,7 @@ docker-compose version 1.21.0, build 5920eb0
 출처: https://somjang.tistory.com/entry/Docker-Amazon-Linux2-AMI-%EC%97%90%EC%84%9C-docker-compose-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0
 
 
-### TypeError: ufunc 'isnan' not supported for the input types, and the inputs could not be safely coerced to any supported types according to the casting rule ''safe''
+### [ python-pandas ] TypeError: ufunc 'isnan' not supported for the input types, and the inputs could not be safely coerced to any supported types according to the casting rule ''safe''
 ```python
 df[column1].apply(lambda x: np.isnan(x))
 # df[column1] dtype : object
@@ -54,7 +54,7 @@ df[column1].apply(lambda x: np.isnan(x))
 `pd.isnull` 로 적용하여 해결
 
 
-### OperationalError: (psycopg2.OperationalError) server closed the connection unexpectedly. This probably means the server terminated abnormally before or while processing the request.
+### [ python-psycopg2 ] OperationalError: (psycopg2.OperationalError) server closed the connection unexpectedly. This probably means the server terminated abnormally before or while processing the request.
 
 ### PC 프리징 현상
 사내 윈도우 서버가 가끔 프리징되는 현상이 일어난다. 원인은 크게 소프트웨어 / 하드웨어의 문제일 수 있다고 한다. 소프트웨어 측면에서는 윈도우 OS상의 문제거나 메모리 과부하 또는 악성코드에 의한 현상 등이 있다. 하드웨어 측면에선 CPU 쿨러 고장 또는 메인 보드 고장 등 다양한 원인이 있을 수 있다. 일단 할 수 있는 것부터 접근하여 
@@ -128,8 +128,9 @@ $ sudo apt-get install libmysqlclient-dev
 출처: https://samplenara.tistory.com/19
 
 
-### sqlalchemy.exc.OperationalError: (MySQLdb._exceptions.OperationalError) (2002, "Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)")
+### [ mysql-docker ] sqlalchemy.exc.OperationalError: (MySQLdb._exceptions.OperationalError) (2002, "Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)")
 ```
 Use "127.0.0.1", instead of "localhost"
 ```
 출처: https://stackoverflow.com/questions/18150858/operationalerror-2002-cant-connect-to-local-mysql-server-through-socket-v
+
