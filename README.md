@@ -1,4 +1,4 @@
-# My Logging Note
+# Logging Note
 
 ### My Note. 
 - [Bug Report](https://github.com/yujin-dev/Log-Note/blob/master/Bug-note.md)
