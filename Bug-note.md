@@ -134,8 +134,17 @@ Use "127.0.0.1", instead of "localhost"
 ```
 출처: https://stackoverflow.com/questions/18150858/operationalerror-2002-cant-connect-to-local-mysql-server-through-socket-v
 
-### [ airflow ] ModuleNotFoundError: No module named 'wtforms.compat'
+### [ airflow 실행 ] ModuleNotFoundError: No module named 'wtforms.compat'
 `pip install apache-airflow` 이 후 `airflow db init`을 실행하여 DB를 초기화하는데 오류가 발생함
 https://stackoverflow.com/questions/69879246/no-module-named-wtforms-compat에 따르면 wtforms version 이 python version과 안 맞는 것 같음.
 
 `pip install "apache-airflow==2.2.1" --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.2.1/constraints-3.8.txt"`로 [airflow 공식 문서](https://airflow.apache.org/docs/apache-airflow/stable/installation/installing-from-pypi.html) 에서 제공한대로 constraint 추가하여 해결
+
+
+### [ jenkins-gitlab 연동 ] stdout: HTTP Basic: Access denied
+
+`http://username:personal_access_token@gitlab.yatra.com/xxxxxxxxxxxxxxxxxx.git.` 로 설정
+
+출처: https://gitlab.com/gitlab-org/gitlab-foss/-/issues/38910
+
+### [ jenkins-gitlab hook 설치 오류 ] Failed to load: Gitlab Hook Plugin (1.4.2) - Plugin is missing: ruby-runtime (0.12)
