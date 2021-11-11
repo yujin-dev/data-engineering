@@ -143,3 +143,8 @@ OOM Killer는 Heuristic하게 프로세스를 종료시킨다.
 *[출처]*
 - https://blog.2dal.com/2017/03/27/docker-and-oom-killer/
 - https://brunch.co.kr/@alden/16
+
+
+## 캐시 메모리 주기적 삭제
+
+*[출처] https://blog.lael.be/post/1090*
