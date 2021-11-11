@@ -17,7 +17,7 @@ $ cp {복사하려는 경로} {대상 경로}
 - `-u` : 최신 파일이면 복사
 - `-b` : 이미 존재하는 파일이면 백업 생성
 
-출처: https://jframework.tistory.com/6
+*[출처] https://jframework.tistory.com/6*
 
 
 ## linux 파일 시간 확인
@@ -39,7 +39,7 @@ $ find 폴더 -name 파일명 -mtime +일수 -delete
 $ find 폴더 -name 파일명 -mtime +일수 -exec rm -f {} \;
 ```
 
-*출처:* https://zetawiki.com/wiki/%EB%A6%AC%EB%88%85%EC%8A%A4_%EB%82%A0%EC%A7%9C_%EA%B8%B0%EC%A4%80%EC%9C%BC%EB%A1%9C_%ED%8C%8C%EC%9D%BC_%EC%82%AD%EC%A0%9C%ED%95%98%EA%B8%B0
+*[출처] https://zetawiki.com/wiki/%EB%A6%AC%EB%88%85%EC%8A%A4_%EB%82%A0%EC%A7%9C_%EA%B8%B0%EC%A4%80%EC%9C%BC%EB%A1%9C_%ED%8C%8C%EC%9D%BC_%EC%82%AD%EC%A0%9C%ED%95%98%EA%B8%B0 *
 
 ## Windows Performance Monitoring 
 ### 성능 모니터 기록하기
@@ -109,7 +109,7 @@ Device          Start        End    Sectors   Size Type
 $ sudo mount /dev/sda4 /mnt/windows
 ```
 
-``console
+```console
 $ df
 Filesystem     1K-blocks      Used Available Use% Mounted on
 
@@ -117,3 +117,29 @@ Filesystem     1K-blocks      Used Available Use% Mounted on
 /dev/sda4      603567860 247545508 356022352  42% /mnt/windows
 ```
 mount되었음을 알 수 있다.
+
+## OOM Killer
+### Memory Overcommit
+
+Memory Commit은 malloc()의 시스템 콜을 통해 Linux 커널에 메모리 할당을 요청하면 커널이 바로 물리 메모리의 영역을 할당하지 않고 요청한 메모리 영역의 **주소값**만 반환하는 것을 의미힌다. 
+즉, 물리 메모리에 할당되지 않은 상태이다.
+
+Memory Overcommit은 가상 메모리 시스템은 현재 사용가능한 메모리 영역을 초과한 영역의 반환을 허락하는 것을 의미한다.
+`fork()` 시스템 콜과 같은 순간적으로 많은 양의 메모리가 필요한 작업때문에 이러한 기능이 필요하다. 
+`fork()` 는 새로운 프로세스를 만드는 시스템 콜인데 호출되면 자식 프로세스는 부모 프로세스의 모든 주소 공간을 복사한다.
+부모 프로세스의 메모리 영역을 복사하는 과정에서 memory commit이 일어나고 경우에 따라 overcommit이 필요하다. 
+대부분, `fork()` -> `exec()`로 넘어가기 때문에 복사해온 공간을 그대로 사용하는 경우는 거의 없다. 
+
+
+
+### OOM Killer(Out of Memory Killer)
+memory commit에서 먼저 주소값만 반환하고 해당 주소값에 쓰기 요청이 들어오는 순간에 주소값을 물리 메모리에 실제로 바인딩한다. 
+이 때, 실제 메모리와 스왑 메모리를 전부 활용해도 메모리 확보가 불가능하다고 판단되면 프로세스를 강제 종료시키는 것을 OOM이라고 한다.
+OOM Killer는 Heuristic하게 프로세스를 종료시킨다.
+
+프로세스마다 커널에 의해 -100 ~ 1000사의 score가 매겨지는데, score가 높은 프로세스가 OOM Killer의 대상이 된다.
+`/proc/{process_id}/oom_score`로 score값을 확인할 수 있다.
+
+*[출처]*
+- https://blog.2dal.com/2017/03/27/docker-and-oom-killer/
+- https://brunch.co.kr/@alden/16
