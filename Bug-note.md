@@ -148,3 +148,22 @@ https://stackoverflow.com/questions/69879246/no-module-named-wtforms-compat에 �
 출처: https://gitlab.com/gitlab-org/gitlab-foss/-/issues/38910
 
 ### [ jenkins-gitlab hook 설치 오류 ] Failed to load: Gitlab Hook Plugin (1.4.2) - Plugin is missing: ruby-runtime (0.12)
+
+
+### [ gitlab-runner - Dockfile 빌드 ] Runtime platform                                    arch=amd64 os=linux pid=7 revision=4b9e985a version=14.4.0
+wildcard로 wheel파일을 설치하려 했는데 `RUN`이 안 먹혀서 `CMD`로 작성하니 오류가 발생함
+
+```Dockerfile
+FROM gitlab/gitlab-runner:latest
+RUN apt-get -y update
+RUN apt-get -y install python3
+RUN apt-get -y install python3-pip
+COPY _requires/ /home/gitlab-runner/
+COPY test_compustat/cache/ /tmp/cache/
+CMD pip3 install *.whl
+```
+
+[StackOverflow](https://stackoverflow.com/questions/41428013/why-does-wildcard-for-jar-execution-not-work-in-docker-cmd)에 따르면 
+`CMD`는 `/bin/sh`로 돌아가는데 리눅스에 파일이 없어서 안 돌아가는 것 같음.
+
+
