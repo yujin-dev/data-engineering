@@ -211,3 +211,25 @@ thread.start_new_thread(os.system, ("...",))
 ctypes.windll.shell32.ShellExecuteA(0, 'open', calc, None, None, 1)
 ```
 ***출처:https://blog.naver.com/PostView.naver?blogId=heennavi1004&logNo=222052800571&parentCategoryNo=&categoryNo=82&viewDate=&isShowPopularPosts=true&from=search***
+
+## exception 
+### try.. except.. else..
+```python
+try:
+    ...
+except [발생 오류[as 오류 메시지 변수]]:
+    ...
+else:  # 오류가 없을 경우에만 수행된다.
+    ...
+```
+### try.. finally..
+try문에는 finally절을 사용할 수 있다. finally절은 try문 수행 도중 예외 발생 여부에 상관없이 항상 수행된다. 보통 finally절은 사용한 리소스를 close해야 할 때에 많이 사용한다.
+
+```python
+
+f = open('foo.txt', 'w')
+try:
+    # 무언가를 수행한다.
+finally:
+    f.close()
+```
