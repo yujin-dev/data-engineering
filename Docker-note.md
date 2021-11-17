@@ -90,3 +90,8 @@ Hello
 
 
 *(출처) https://williamjeong2.github.io/blog/10-docker-run-vs-cmd-vs-entryporint/*
+
+## Dockerfile로 이미지 빌드 시 상호작용 방지
+`ARG DEBIAN_FRONTEND=noninteractive` 추가할 것
+
+*(출처) https://ykarma1996.tistory.com/93*
