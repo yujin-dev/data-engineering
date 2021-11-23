@@ -1,4 +1,4 @@
-# Distributed
+# Storage
 
 ## Hadoop
 - 하둡은 대용량 데이터를 분산 처리할 수 있는 자바 기반 프레임워크 
@@ -44,3 +44,6 @@ Object Storage는 S3나 Cloud Storage의 형식으로 물리적 제약이 없는
 파일에 대한 메타 정보가 적기 때문에 File이나 Block Storage에 비해 빠르게 작동하고, 공간을 효율적으로 사용할 수 있다.  
 하지만 트랜젝션으로 일관성을 유지하는 방식이 아니기 때문에 데이터 수정이 어렵다. 파일을 덮어쓰는 방법을 이용하여 수정한다.   
 ![](https://medium.com/harrythegreat/%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C%EC%83%81-%EC%98%A4%EB%B8%8C%EC%A0%9D%ED%8A%B8-%EC%8A%A4%ED%86%A0%EB%A6%AC%EC%A7%80-object-storage-%EB%9E%80-9d9c2da57649)
+
+
+## Hbase
