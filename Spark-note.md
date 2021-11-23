@@ -1,4 +1,29 @@
 # Spark Note
+
+## Spark
+- MapReduce : 디스크로부터 데이터를 읽은 후 Map을 통해 데이터를 key-value로 묶은 후 Reduce를 통해 중복된 데이터를 제거하고 가공하여 디스크에 저장한다. 
+- MapReduce 같은 파일 기반의 디스크 I/O는 성능이 좋지 않고 In-Memory기반의 연산을 통해 처리 성능을 향상시키기 위해 Spark가 등장
+- Fault Tolerance & Data Parallelism
+- 클러스터를 관리하는 Cluster Manager와 데이터를 분산 저장하는 Distributed Storage System이 필요하다.
+    - Cluster Mananer로는 Hadoop의 YARN이나 Apache Mesos 등이 있다.
+    - Distributed Storage System로는 HDFS, Cassandra, S3, Kudu 등이 있다.
+
+### API
+- RDD : 여러 클러스터에 분산되어 있으며 fault-tolerant한 방식으로 유지되는 read-only형태의 데이터 모음이다. 
+    ```
+    lines = spark.textFile("hdfs://...") # HDFS로부터 데이터를 읽어옴
+    errors = lines.filter(_.startWith("Error")) # ERROR로 시작되는 데이터만 필터링하여 RDD 생성
+    errors.persist() # In-Memory에 errors RDD를 persist
+    errors.count() 
+    errors.filter(_.contains("HDFS"))\
+        .map(_.split('\t')(3))\
+        .collect()
+    ```
+- DataFrame : 스키마를 가진 RDD로 RDB의 테이블과 비슷하다.
+- DataSet
+
+*(출처) https://mangkyu.tistory.com/128*
+
 ## Spark, Hadoop 설치
 **[ 도커 띄워서 spark 설치 ]**
 우분투 이미지를 받는다.
