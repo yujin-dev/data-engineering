@@ -53,3 +53,45 @@ $ docker logs {container_id}
 ```console
 $ docker-compose restart
 ```
+
+## `RUN` vs. `CMD`
+### `RUN`
+- 이미지에 새로운 패키지를 설치하거나 명령어를 실행시킬 경우
+- 실행때마다 레이어가 생성된다.
+```Dockerfile
+FROM ubuntu:18.04
+RUN apt-get update
+RUN apt-get install -y python3 python3-pip wget git less neovim
+RUN pip3 install panda
+```
+보다는 설치를 하나의 레이어로 하면 깔끔하게 관리할 수 있다.
+```Dockerfile
+FROM ubuntu:18.04
+RUN apt-get update \
+    && apt-get install -y python3 python3-pip wget git less neovim \
+    && pip3 install pandas
+```
+
+### `CMD`
+- 기본 명령어를 설정하거나 `ENTRYPOINT`의 기본 명령어 파라미터를 설정할 때 사용된다.
+- CMD는 여러 번 dockerfile에 작성할 수 있지만, 가장 마지막에 작성된 CMD 만이 실행(override) 된다.
+- 주로 컨테이너를 실행할 때 사용할 default를 설정하기 위해 사용된다.
+
+Dockerfile 만들시 아무런 command를 주지 않으면 `CMD` 명령이 실행된다.
+`echo "Hello"`와 같은 명령어를 전달하면 `CMD` 명령이 무시되고 해당 커맨드가 실행된다.
+
+```console
+$ docker run -it --rm <image-name> echo "Hello"
+Hello
+```
+
+### `ENTRYPOINT`
+- `docker run` 명령어로 컨테이너를 생성 후 실행되는 명령어
+
+
+*(출처) https://williamjeong2.github.io/blog/10-docker-run-vs-cmd-vs-entryporint/*
+
+## Dockerfile로 이미지 빌드 시 상호작용 방지
+`ARG DEBIAN_FRONTEND=noninteractive` 추가할 것
+
+*(출처) https://ykarma1996.tistory.com/93*
