@@ -38,3 +38,13 @@ MongoDB는 BSON으로 데이터가 쌓이기 때문에 array나 nested 데이터
 *(출처)*
 - https://tiger5net.tistory.com/951
 - https://www.bloter.net/newsView/blt201203290001`
+
+## MongoDB Indexes
+인덱스는 MongoDB 쿼리의 효율적 실행을 위해 필요하다. 인덱스가 설정되어 있지 않으면 collection scan( collection 내에 모든 document 스캔 )을 수행해야 한다. 인덱스는 특정 field(s)의 값은 정렬되어 저장된다. 
+
+![](https://docs.mongodb.com/manual/images/index-for-sort.bakedsvg.svg)
+
+### Default `_id` index
+MongoDB는 collection 생성에서 `_id`라는 고유 index를 생성한다. sharded cluster에서 shard key를 `_id` field로 사용하지 않으면 `_id`의 값이 고유함을 보장해야 한다.
+
+![](https://docs.mongodb.com/manual/sharding/)
