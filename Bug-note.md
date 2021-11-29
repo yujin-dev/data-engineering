@@ -150,7 +150,10 @@ https://stackoverflow.com/questions/69879246/no-module-named-wtforms-compat에 �
 ### [ jenkins-gitlab hook 설치 오류 ] Failed to load: Gitlab Hook Plugin (1.4.2) - Plugin is missing: ruby-runtime (0.12)
 
 
-### [ gitlab-runner - Dockfile 빌드 ] Runtime platform                                    arch=amd64 os=linux pid=7 revision=4b9e985a version=14.4.0
+### [ gitlab-runner - Dockfile 빌드 ] 
+```
+Runtime platform arch=amd64 os=linux pid=7 revision=4b9e985a version=14.4.0
+```
 wildcard로 wheel파일을 설치하려 했는데 `RUN`이 안 먹혀서 `CMD`로 작성하니 오류가 발생함
 
 ```Dockerfile
@@ -167,3 +170,19 @@ CMD pip3 install *.whl
 `CMD`는 `/bin/sh`로 돌아가는데 리눅스에 파일이 없어서 안 돌아가는 것 같음.
 
 
+### Amazon DocumentDB 엔드포인트에 Connect 수 없음
+Amazon DocumentDB 에 연결하려고 할 때 표시될 수 있는 일반적인 오류 메시지 중 하나입니다.
+```
+connecting to: mongodb://docdb-2018-11-08-21-47-27.cluster-ccuszbx3pn5e.us-east-
+1.docdb.amazonaws.com:27017/
+2018-11-14T14:33:46.451-0800 W NETWORK [thread1] Failed to connect to
+172.31.91.193:27017 after 5000ms milliseconds, giving up.
+2018-11-14T14:33:46.452-0800 E QUERY [thread1] Error: couldn't connect to server
+docdb-2018-11-08-21-47-27.cluster-ccuszbx3pn5e.us-east-1.docdb.amazonaws.com:27017,
+connection attempt failed :
+connect@src/mongo/shell/mongo.js:237:13
+@(connect):1:6
+exception: connect failed
+
+```
+> 퍼블릭 엔드포인트로부터 연결하는 경우 : 노트북 또는 로컬 개발 머신에서 직접 Amazon DocumentDB 클러스터에 연결하려고 합니다. 노트북 또는 로컬 개발 시스템과 같은 퍼블릭 엔드포인트에서 직접 Amazon DocumentDB 클러스터에 연결하려는 시도는 실패합니다. Amazon DocumentDB 는 가상 사설 클라우드 (VPC) 전용이며 현재 퍼블릭 엔드포인트를 지원하지 않습니다. 따라서 VPC 외부의 노트북 또는 개발 환경에서 Amazon DocumentDB 클러스터에 직접 연결할 수 없습니다. Amazon VPC 외부에서 Amazon DocumentDB 클러스터에 연결하려면 SSH 터널을 사용할 수 있습니다. 자세한 내용은 Amazon VPC 외부에서 Amazon DocumentDB 클러스터에 연결 단원을 참조하세요. 또한, 개발 환경이 다른 Amazon VPC에 있을 경우에는 VPC 피어링을 사용하여 동일한 리전 또는 다른 리전의 다른 Amazon VPC에서 Amazon DocumentDB 클러스터에 연결할 수 있습니다.
