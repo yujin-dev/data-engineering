@@ -48,3 +48,37 @@ MongoDB는 BSON으로 데이터가 쌓이기 때문에 array나 nested 데이터
 MongoDB는 collection 생성에서 `_id`라는 고유 index를 생성한다. sharded cluster에서 shard key를 `_id` field로 사용하지 않으면 `_id`의 값이 고유함을 보장해야 한다.
 
 ![](https://docs.mongodb.com/manual/sharding/)
+
+## AWS DynamoDB
+DynamoDB는 기본키를 통해 테이블의 각 항목을 고유하게 식별하고 보조 인덱스를 사용하여 보다 유연한 쿼리를 작성하도록 한다.
+
+![](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/images/HowItWorksPeople.png
+
+- Table : `Person` 테이블
+    - schemaless한 특징이 있다.
+- Items : 하나의 칸을 item으로 볼 수 있음
+- Attributes : 하나의 칸에 속한 여러 속성들. 각 속성은 여러 속성으로 구성될 수 있음
+- Primary Key : `PersonID`로 고유키  
+    - Partition Key : simple primary key로(1개의 attribute) DynamoDB는 hash function의 input으로 사용된다. hash function의 output은 파티션을 정한다. 
+    - Partition Key & Sort Key : composite primary key(2개의 attribute)로 같은 parition key에 대해 sort key에 따라 정렬되어 저장된다. partition key는 hash attribute, sort key는 range attribute라고도 한다.
+
+### Secondary Indexes
+여러 개의 보조 인덱스를 가질 수 있다.
+- Global secondary index : 서로 다른 partition key와 sort key로 구성된 index
+- Local secondary index : 같은 partition key에 다른 sort key로 구성된 index.
+
+![](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/images/HowItWorksGenreAlbumTitle.png)
+
+위에서 Music 테이블은 Partition key인 Artist, Sort key인 SongTitle로 쿼리할 수 있지만 보조 인덱스 GenreAlbumTitle을 통해 Genre, AlbumTitle를 기준으로 쿼리 할 수도 있다. 
+
+### Partitions and Data Distribution
+DynamoDB는 partitions에 따라 데이터를 저장한다. 파티션은 SSD에 백업되는 테이블의 스토리지 할당으로 AWS 리젼에 따라 Availability Zones에 자동으로 replicate된다.  
+처음 테이블을 생성하면 `CREATING`이라는 상태로 뜬다. 이 때 DynamoDB는 충분한 파티션을 할당한다.  
+
+DynamoDB는 다음에 따라 partition을 추가한다. 파티션 관리는 백그라운드에서 **자동으로** 이루어진다.
+- 기존 파티션이 지원 가능한 한도를 초과하여 테이브릐 할당된 처리량을 늘리는 경우
+- 기존 파티션 용량이 다 차서 추가 스토리지 공간이 필요한 경우
+
+*(출처) https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/HowItWorks.html*
+*(참고)*
+- SQL vs. DynamoDB : https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/SQLtoNoSQL.html
