@@ -1,4 +1,4 @@
-# Storage
+# Distributed Storage
 
 ## Hadoop
 - 하둡은 대용량 데이터를 분산 처리할 수 있는 자바 기반 프레임워크 
@@ -46,4 +46,13 @@ Object Storage는 S3나 Cloud Storage의 형식으로 물리적 제약이 없는
 ![](https://medium.com/harrythegreat/%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C%EC%83%81-%EC%98%A4%EB%B8%8C%EC%A0%9D%ED%8A%B8-%EC%8A%A4%ED%86%A0%EB%A6%AC%EC%A7%80-object-storage-%EB%9E%80-9d9c2da57649)
 
 
-## Hbase
+## AWS Glue
+AWS Glue를 통해 데이터 웨어하우스, 데이터 레이크의 스토리지에 데이터를 구성/정리/검증/포맷 할 수 있다.
+서버리스 환경에서 작동하여 사용한 리소스에 대해서만 비용을 지불할 수 있다.
+
+### AWS Glue Data Catalog
+AWS Glue 데이터 카탈로그는 모든 데이터의 정형, 운영 메타 데이터를 관리하는 중앙 저장소이다.
+테이블 정의를 추가하면 이를 ETL에 사용할 수 있고 쿼리할 수 있다.
+
+Glue 크롤러가 정기적으로 실행되도록 하여 메타데이터가 항상 최신으로 유지되고 기본 데이터와 동기화되도록 한다.
+AWS Glue 크롤러는 데이터 스토어에 연결하여 우선순위에 따라 분류 목록을 거쳐 데이터 스키마 등을 추출한 후, 이러한 메타데이터를 카탈로그에 채운다.
