@@ -186,3 +186,27 @@ exception: connect failed
 
 ```
 > 퍼블릭 엔드포인트로부터 연결하는 경우 : 노트북 또는 로컬 개발 머신에서 직접 Amazon DocumentDB 클러스터에 연결하려고 합니다. 노트북 또는 로컬 개발 시스템과 같은 퍼블릭 엔드포인트에서 직접 Amazon DocumentDB 클러스터에 연결하려는 시도는 실패합니다. Amazon DocumentDB 는 가상 사설 클라우드 (VPC) 전용이며 현재 퍼블릭 엔드포인트를 지원하지 않습니다. 따라서 VPC 외부의 노트북 또는 개발 환경에서 Amazon DocumentDB 클러스터에 직접 연결할 수 없습니다. Amazon VPC 외부에서 Amazon DocumentDB 클러스터에 연결하려면 SSH 터널을 사용할 수 있습니다. 자세한 내용은 Amazon VPC 외부에서 Amazon DocumentDB 클러스터에 연결 단원을 참조하세요. 또한, 개발 환경이 다른 Amazon VPC에 있을 경우에는 VPC 피어링을 사용하여 동일한 리전 또는 다른 리전의 다른 Amazon VPC에서 Amazon DocumentDB 클러스터에 연결할 수 있습니다.
+
+### Ubuntu won't load after clearing orphaned inode
+우분투 부팅시 
+```
+/dev/sdb5: recovering journal
+
+Clearing orphaned inode 1180978 (uid=1000, gid=1000, mode=0100600, size=0)
+... 
+```
+*(출처) https://greenfishblog.tistory.com/176*
+
+위와 같은 메시지와 함께 부팅이 진행되지 않음.다시 시작하여  Ubuntu 고급설정으로 들어가 recovery mode로 실행함.
+
+
+![](https://www.howtogeek.com/wp-content/uploads/2014/09/ubuntu-recovery-menu.png?trim=1,1&bg-color=000&pad=1,1)
+
+위의 항목을 하나씩 실행하여 검사함.
+
+*(출처 및 참고)https://www.howtogeek.com/196740/how-to-fix-an-ubuntu-system-when-it-wont-boot/*
+
+모두 오류없이 실행되어 `system-summary`에서 현재 상태를 확인함.
+확인하니 하드디스크가 100%여서 부팅되지 않은 것으로 보여 `root`를 통해 command로 폴더를 지워줌.
+
+재부팅하니 정상 작동함.
