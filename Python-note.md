@@ -233,3 +233,10 @@ try:
 finally:
     f.close()
 ```
+
+## 비동기 concurrent.futures
+> 완벽하게 작동합니다! 물론 CPU 집약적인 작업을 위해 ProcessPoolExecutor를 사용하는게 좋습니다. ThreadPoolExecutor는 네트워크 작업 또는 I / O에 더 적합합니다.API는 비슷하지만 ProcessPoolExecutor는 다중 처리 모듈을 사용하며 Global Interpreter Lock의 영향을 받지 않습니다. 그러나 picklable이 아닌 객체는 사용할 수 없습니다. 따라서 우리는 process pool executor에 전달 된 callable 내부에서 무엇을 사용하고 리턴하는지 대해서 신중하게 선택할 필요가 있습니다.
+
+*(출처) https://hamait.tistory.com/828*
+
+*(참고) https://hamait.tistory.com/828*
