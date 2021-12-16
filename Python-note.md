@@ -234,9 +234,200 @@ finally:
     f.close()
 ```
 
-## 비동기 concurrent.futures
-> 완벽하게 작동합니다! 물론 CPU 집약적인 작업을 위해 ProcessPoolExecutor를 사용하는게 좋습니다. ThreadPoolExecutor는 네트워크 작업 또는 I / O에 더 적합합니다.API는 비슷하지만 ProcessPoolExecutor는 다중 처리 모듈을 사용하며 Global Interpreter Lock의 영향을 받지 않습니다. 그러나 picklable이 아닌 객체는 사용할 수 없습니다. 따라서 우리는 process pool executor에 전달 된 callable 내부에서 무엇을 사용하고 리턴하는지 대해서 신중하게 선택할 필요가 있습니다.
-
+## 비동기 `concurrent.futures`
+> ..물론 CPU 집약적인 작업을 위해 ProcessPoolExecutor를 사용하는게 좋습니다. ThreadPoolExecutor는 네트워크 작업 또는 I / O에 더 적합합니다.API는 비슷하지만 ProcessPoolExecutor는 다중 처리 모듈을 사용하며 Global Interpreter Lock의 영향을 받지 않습니다. 그러나 picklable이 아닌 객체는 사용할 수 없습니다. 따라서 우리는 process pool executor에 전달 된 callable 내부에서 무엇을 사용하고 리턴하는지 대해서 신중하게 선택할 필요가 있습니다.
 *(출처) https://hamait.tistory.com/828*
 
+**[ ProcessPoolExecutor diagram ]**
+
+소스코드를 참고한다.
+
+```python
+The following diagram and text describe the data-flow through the system:
+
+|======================= In-process =====================|== Out-of-process ==|
+
++----------+     +----------+       +--------+     +-----------+    +---------+
+|          |  => | Work Ids |       |        |     | Call Q    |    | Process |
+|          |     +----------+       |        |     +-----------+    |  Pool   |
+|          |     | ...      |       |        |     | ...       |    +---------+
+|          |     | 6        |    => |        |  => | 5, call() | => |         |
+|          |     | 7        |       |        |     | ...       |    |         |
+| Process  |     | ...      |       | Local  |     +-----------+    | Process |
+|  Pool    |     +----------+       | Worker |                      |  #1..n  |
+| Executor |                        | Thread |                      |         |
+|          |     +----------- +     |        |     +-----------+    |         |
+|          | <=> | Work Items | <=> |        | <=  | Result Q  | <= |         |
+|          |     +------------+     |        |     +-----------+    |         |
+|          |     | 6: call()  |     |        |     | ...       |    |         |
+|          |     |    future  |     |        |     | 4, result |    |         |
+|          |     | ...        |     |        |     | 3, except |    |         |
++----------+     +------------+     +--------+     +-----------+    +---------+
+
+```
+`Executor.submit()`를 호출하면
+-  고유값인 _WorkItem을 생성하고 `Work Items`(dict)에 추가한다.
+- _WorkItem id는 `Work Ids` 큐에 추가된다.
+
+
+`Local Worker Thread`
+-  `Work Ids` 큐에서 Work Ids를 `Work Items`에서 일치되는 id를 찾는다. 만일 _WorkItem이 취소되었으면
+`Work Items`(dict)에서 삭제하고 아니면 _CallItem로 다시 구성하여 `Call Q`에 넣는다. `Call Q`에 추가된 항목은 Future.cancel()로 취소될 수 없다.
+- `Result Q`에서 _ResultItems을 읽어 `Work Items`(dict)에 저장된 future를 업데이트하고  `Work Items`에서는 해당 항목을 삭제한다.
+
+`Process #1..n`
+- `Call Q`에서 _CallItem을 읽어 해당 call을 실행하고 결과물을 `Result Q`에 넣는다.
+
+```python
+class ProcessPoolExecutor(_base.Executor):
+    def __init__(self, max_workers=None, mp_context=None,
+                 initializer=None, initargs=()):
+    
+    def submit(*args, **kwargs):
+        
+        ...
+
+        with self._shutdown_lock:
+            if self._broken:
+                raise BrokenProcessPool(self._broken)
+            if self._shutdown_thread:
+                raise RuntimeError('cannot schedule new futures after shutdown')
+            if _global_shutdown:
+                raise RuntimeError('cannot schedule new futures after '
+                                   'interpreter shutdown')
+
+        f = _base.Future()
+        w = _WorkItem(f, fn, args, kwargs)
+
+        self._pending_work_items[self._queue_count] = w # dict
+        self._work_ids.put(self._queue_count) # queue
+        self._queue_count += 1 
+
+        self._queue_management_thread_wakeup.wakeup() # wake up thread
+        self._start_queue_management_thread()
+        return f
+
+    def _start_queue_management_thread(self):
+
+        if self._queue_management_thread is None:
+            # When the executor gets garbarge collected, the weakref callback
+            # will wake up the queue management thread so that it can terminate
+            # if there is no pending work item.
+            def weakref_cb(_,
+                           thread_wakeup=self._queue_management_thread_wakeup):
+                mp.util.debug('Executor collected: triggering callback for'
+                              ' QueueManager wakeup')
+                thread_wakeup.wakeup()
+            # Start the processes so that their sentinels are known.
+            self._adjust_process_count()
+
+            self._queue_management_thread = threading.Thread( 
+                target=_queue_management_worker,
+                args=(weakref.ref(self, weakref_cb),
+                      self._processes,
+                      self._pending_work_items,
+                      self._work_ids,
+                      self._call_queue,
+                      self._result_queue,
+                      self._queue_management_thread_wakeup),
+                name="QueueManagerThread")
+            self._queue_management_thread.daemon = True
+            self.weakref_cb.start()
+            _threads_wakeups[self._queue_management_thread] = \
+                self._queue_management_thread_wakeup
+
+```
+```python
+
+class ThreadPoolExecutor(_base.Executor):
+
+    # Used to assign unique thread names when thread_name_prefix is not supplied.
+    _counter = itertools.count().__next__
+
+    def __init__(self, max_workers=None, thread_name_prefix='',
+                 initializer=None, initargs=()):
+
+    def submit(*args, **kwargs):
+        
+        ...
+        with self._shutdown_lock:
+            if self._broken:
+                raise BrokenThreadPool(self._broken)
+
+            if self._shutdown:
+                raise RuntimeError('cannot schedule new futures after shutdown')
+            if _shutdown:
+                raise RuntimeError('cannot schedule new futures after '
+                                   'interpreter shutdown')
+
+            f = _base.Future()
+            w = _WorkItem(f, fn, args, kwargs)
+
+            self._work_queue.put(w)
+            self._adjust_thread_count()
+            return f
+```
+
 *(참고) https://hamait.tistory.com/828*
+
+## 병렬 `multiprocessing`
+
+- `multiprocessing.Process`
+```python
+class Process(process.BaseProcess):
+    _start_method = None
+    @staticmethod
+    def _Popen(process_obj):
+        return _default_context.get_context().Process._Popen(process_obj) # start() 실행하면 실행됨
+
+
+class BaseProcess(object):
+    '''
+    Process objects represent activity that is run in a separate process
+    The class is analogous to `threading.Thread`
+    '''
+    def __init__(self, group=None, target=None, name=None, args=(), kwargs={},
+                 *, daemon=None):
+
+    def run(self):
+        '''
+        Method to be run in sub-process; can be overridden in sub-class
+        '''
+        if self._target:
+            self._target(*self._args, **self._kwargs)
+
+    def start(self):
+        '''
+        Start child process
+        '''
+        self._check_closed()
+        assert self._popen is None, 'cannot start a process twice'
+        assert self._parent_pid == os.getpid(), \
+               'can only start a process object created by current process'
+        assert not _current_process._config.get('daemon'), \
+               'daemonic processes are not allowed to have children'
+        _cleanup()
+        self._popen = self._Popen(self)
+        self._sentinel = self._popen.sentinel
+        # Avoid a refcycle if the target function holds an indirect
+        # reference to the process object (see bpo-30775)
+        del self._target, self._args, self._kwargs
+        _children.add(self)
+
+```
+- `multiprocessing.Pool`
+```python
+class Pool(object):
+    '''
+    Class which supports an async version of applying functions to arguments.
+    '''
+    _wrap_exception = True
+
+    @staticmethod
+    def Process(ctx, *args, **kwds):
+        return ctx.Process(*args, **kwds)
+
+    def __init__(self, processes=None, initializer=None, initargs=(),
+                 maxtasksperchild=None, context=None):
+
+```
