@@ -39,7 +39,7 @@ $ find 폴더 -name 파일명 -mtime +일수 -delete
 $ find 폴더 -name 파일명 -mtime +일수 -exec rm -f {} \;
 ```
 
-*[출처] https://zetawiki.com/wiki/%EB%A6%AC%EB%88%85%EC%8A%A4_%EB%82%A0%EC%A7%9C_%EA%B8%B0%EC%A4%80%EC%9C%BC%EB%A1%9C_%ED%8C%8C%EC%9D%BC_%EC%82%AD%EC%A0%9C%ED%95%98%EA%B8%B0 *
+*[출처] https://zetawiki.com/wiki/%EB%A6%AC%EB%88%85%EC%8A%A4_%EB%82%A0%EC%A7%9C_%EA%B8%B0%EC%A4%80%EC%9C%BC%EB%A1%9C_%ED%8C%8C%EC%9D%BC_%EC%82%AD%EC%A0%9C%ED%95%98%EA%B8%B0*
 
 ## Windows Performance Monitoring 
 ### 성능 모니터 기록하기

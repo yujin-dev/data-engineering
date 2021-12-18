@@ -577,3 +577,9 @@ locktype       | relation  |       mode     | tid  | pid  | granted
 `SELECT FOR UPDATE`으로 쓰기 잠금을 걸이 row변경을 막음
 
 *[출처] https://medium.com/29cm/db-postgresql-lock-%ED%8C%8C%ED%97%A4%EC%B9%98%EA%B8%B0-57d37ebe057*
+
+
+## The Internals of PostgreSQL
+
+*참고*
+- https://www.interdb.jp/pg/pgsql01.html
