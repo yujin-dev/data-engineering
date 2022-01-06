@@ -45,7 +45,11 @@ lambda는 보통 stateless 방식으로 백엔드를 구성하는데 최적화�
 - lambda 함수를 만들 때 배포 패키지에 코드를 패키징하는데 컨테이너 이미지와 .zip 파일 아카이블 2가지를 지원한다. 
     - .zip 파일 아카이브로 기존 컨테이너 이미지 함수로 변환할 수 없다.
 
-*(출처) https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/lambda-functions.html*
+- AWS ECR에 컨테이너 이미지를 업로드하여 lambda에서 생성할 수 있다. 
+
+*(출처)*
+- https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/lambda-functions.html
+- https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-images.html
 
 *(참고)*
 - python 컨테이너 이미지 배포 : https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/python-image.html
