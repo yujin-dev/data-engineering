@@ -40,3 +40,17 @@ lambda는 보통 stateless 방식으로 백엔드를 구성하는데 최적화�
 *(출처)*
 - https://blog.algopie.com/aws/aws-lambda%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%9C-api-%EC%84%9C%EB%B9%84%EC%8A%A4-%EB%B0%B0%ED%8F%AC-12/
 - https://aws.amazon.com/ko/blogs/korea/using-aws-lambda-within-your-game/*
+
+### 함수 생성
+- lambda 함수를 만들 때 배포 패키지에 코드를 패키징하는데 컨테이너 이미지와 .zip 파일 아카이블 2가지를 지원한다. 
+    - .zip 파일 아카이브로 기존 컨테이너 이미지 함수로 변환할 수 없다.
+
+*(출처) https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/lambda-functions.html*
+
+*(참고)*
+- python 컨테이너 이미지 배포 : https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/python-image.html
+
+###  API Gateway 연동
+API와 HTTP 엔드포인트를 생성할 수 있다.
+
+*(참고) https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/services-apigateway.html*
