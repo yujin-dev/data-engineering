@@ -58,3 +58,12 @@ lambda는 보통 stateless 방식으로 백엔드를 구성하는데 최적화�
 API와 HTTP 엔드포인트를 생성할 수 있다.
 
 *(참고) https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/services-apigateway.html*
+
+
+### Lambda 할당량
+
+컴퓨팅 및 스토리지 리소스 할당량을 기본적으로 정해져있어 따로 설정해줘야 한다.
+
+![](./img/2022-01-07-14-54-00.png)
+
+*(출처) https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html*

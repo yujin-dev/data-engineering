@@ -210,3 +210,7 @@ Clearing orphaned inode 1180978 (uid=1000, gid=1000, mode=0100600, size=0)
 확인하니 하드디스크가 100%여서 부팅되지 않은 것으로 보여 `root`를 통해 command로 폴더를 지워줌.
 
 재부팅하니 정상 작동함.
+
+
+### AWS Lambda OSError: [Errno 30] Read-only file system: './cache'
+`/tmp`에서만 write이 가능하다고 함
