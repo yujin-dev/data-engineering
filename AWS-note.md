@@ -67,3 +67,6 @@ API와 HTTP 엔드포인트를 생성할 수 있다.
 ![](./img/2022-01-07-14-54-00.png)
 
 *(출처) https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html*
+
+### Lambda Python 패키지 이용하기
+https://pearlluck.tistory.com/518
