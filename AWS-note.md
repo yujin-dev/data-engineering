@@ -86,3 +86,12 @@ AWS Route 53 기반으로 여러 읽기 전용 replica에 요청을 분산할 �
 ## AWS Web service
 
 *(참고) https://www.slideshare.net/awskorea/ct-2015-your-10million-users-on-aws-channy*
+
+
+## AWS Storage SSD vs. EBS
+> SSD are faster because there's no network latency, but it is ephemeral and you can't detach it from an instance and attach it to another. As you can see, it is available to more powerful instances. 
+EBS are more flexible, since you can attach and detach it from instances, but is a little bit slower, as more suitable for general purpose.
+
+SSD는 좀 더 빠르게 사용할 수 있지만 인스턴스에 제한되고, EBS는 보다 유연하게 사용할 수 있지만( 다른 인스턴스에도 적용 가능 ) 네트워크를 타므로 느릴 수 있다.
+
+*(출처) https://serverfault.com/questions/732196/ebs-vs-ssd-definition*
