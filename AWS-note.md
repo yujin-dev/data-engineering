@@ -70,3 +70,19 @@ API와 HTTP 엔드포인트를 생성할 수 있다.
 
 ### Lambda Python 패키지 이용하기
 https://pearlluck.tistory.com/518
+
+## AWS RDS 읽기 요청을 분산
+
+AWS Route 53 기반으로 여러 읽기 전용 replica에 요청을 분산할 수 있다.
+- Route 53 호스팅 영역 내에 읽기 전용 replica에 연결된 DNS 엔드포인트마다 개별 record를 생성하여 동일한 가중치가 부여됨
+- record set의 엔드포인츠로 요청을 전달
+
+1. RDS - 읽기 전용 replica 생성
+2. Route 53 호스팅
+3. record set 생성
+
+*(출처) https://aws.amazon.com/ko/premiumsupport/knowledge-center/requests-rds-read-replicas/*
+
+## AWS Web service
+
+*(참고) https://www.slideshare.net/awskorea/ct-2015-your-10million-users-on-aws-channy*
