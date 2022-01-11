@@ -68,6 +68,12 @@ API와 HTTP 엔드포인트를 생성할 수 있다.
 
 *(출처) https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html*
 
+## 데이터 저장 옵션
+
+![](./img/2022-01-11-11-58-12.png)
+
+*(출처) https://aws.amazon.com/ko/blogs/korea/choosing-between-aws-lambda-data-storage-options-in-web-apps/*
+
 ### Lambda Python 패키지 이용하기
 https://pearlluck.tistory.com/518
 
