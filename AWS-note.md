@@ -68,7 +68,7 @@ API와 HTTP 엔드포인트를 생성할 수 있다.
 
 *(출처) https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html*
 
-## 데이터 저장 옵션
+### 데이터 저장 옵션
 
 ![](./img/2022-01-11-11-58-12.png)
 
@@ -76,6 +76,9 @@ API와 HTTP 엔드포인트를 생성할 수 있다.
 
 ### Lambda Python 패키지 이용하기
 https://pearlluck.tistory.com/518
+
+### 고정 IP 사용하기
+*(출처) https://jetalog.net/91*
 
 ## AWS RDS 읽기 요청을 분산
 
@@ -101,3 +104,19 @@ EBS are more flexible, since you can attach and detach it from instances, but is
 SSD는 좀 더 빠르게 사용할 수 있지만 인스턴스에 제한되고, EBS는 보다 유연하게 사용할 수 있지만( 다른 인스턴스에도 적용 가능 ) 네트워크를 타므로 느릴 수 있다.
 
 *(출처) https://serverfault.com/questions/732196/ebs-vs-ssd-definition*
+
+
+## [ AWS serverless를 통한 분산처리 참고 ]
+*https://speakerdeck.com/microsoftware/masokon-2019-seobeoriseureul-hwalyonghan-bunsan-ceori-gimminjun?slide=78*
+
+## AWS S3 vs. HDFS 
+- S3는 더 cost-efficient하다. HDFS는 대용량 스토리지에 compute 스펙을 맞춰 인스턴스를 생성해야 하므로 보통 비용이 많이 나간다.
+( S3의 경우 1TB 데이터에 보통 $23/월로 측정되고, HDFS는 전체 약 $103/월로 추정된다고 한다.)
+- 보통 S3가 더 유연하고 multi-AZ가 가능하기에 availablity나 durability가 더 좋은 것으로 추정된다.
+- HDFS가 데이터 지역성까지 좋으면 read throughput이 매우 뛰어나다.
+- S3는 storage / compute를 분리해서 사용할 수 있어 cluster로 throughput을 증진시킬 수 있다. Spark와 같은 ETL job을 수행하면 된다.
+- HDFS는 metadata 성능이 좋아 전체 files를 리스트업하는데 비교적 많이 빠르다.
+- HDFS는 atomic특징이 있어 트랜젹션이 잘 보장된다.
+
+*(출처) https://databricks.com/blog/2017/05/31/top-5-reasons-for-choosing-s3-over-hdfs.html*  
+*(참고) https://resources.useready.com/blog/s3-vs-hdfs-comparing-technologies-in-the-big-data-ecosystem/*
