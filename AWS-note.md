@@ -74,13 +74,36 @@ API와 HTTP 엔드포인트를 생성할 수 있다.
 
 *(출처) https://aws.amazon.com/ko/blogs/korea/choosing-between-aws-lambda-data-storage-options-in-web-apps/*
 
+#### EFS 연동하기
+- 같은 VPC 서브넷에 있어야 공유가 가능하다.
+- 함수 구성의 [ 파일 시스템 추가 ] 에서 EFS를 선택한다.
+
+*(출처) https://aws.amazon.com/ko/blogs/korea/new-a-shared-file-system-for-your-lambda-functions/*
+
+VPC에 연결되면 인터넷에 엑세스하기 위한 권한이 부여되어야 한다.
+- 프라이빗 서브넷에서 액세스하려면 NAT가 필요하다.
+- 인터넷 액세스 권한을 부여하려면 아웃바운드 트래픽을 퍼블릭 서브넷의 NAT Gateway / NAT Instance로 라우팅해야 한다.
+
+VPC 엔드포인트를 통하면 인터넷 게이트웨이, NAT 디바이스, VPN 연결 등이 필요없이 연결이 가능하다.
+
+*(출처) https://aws.amazon.com/ko/premiumsupport/knowledge-center/internet-access-lambda-function/*
+
 ### Lambda Python 패키지 이용하기
 https://pearlluck.tistory.com/518
 
 ### 고정 IP 사용하기
+
+- Elastic IP를 발급한다.
+- 퍼블릭 및 프라이빗 서브넷이 있는 VPC에서 탄력적 IP를 할당한다.
+- Lambda 설정을 변경한다.
+    - AWSLambdaVPCAccessExecutionRole 권한을 추가한다.
+    - private 서브넷을 선택하여 지정한다.
+    - IP 테스트
+
 *(출처) https://jetalog.net/91*
 
-## AWS RDS 읽기 요청을 분산
+
+## [ AWS RDS 읽기 요청을 분산 참고 ]
 
 AWS Route 53 기반으로 여러 읽기 전용 replica에 요청을 분산할 수 있다.
 - Route 53 호스팅 영역 내에 읽기 전용 replica에 연결된 DNS 엔드포인트마다 개별 record를 생성하여 동일한 가중치가 부여됨
