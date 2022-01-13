@@ -88,6 +88,20 @@ VPC 엔드포인트를 통하면 인터넷 게이트웨이, NAT 디바이스, VP
 
 *(출처) https://aws.amazon.com/ko/premiumsupport/knowledge-center/internet-access-lambda-function/*
 
+### VPC 연결 
+lambda 서비스를 VPC에 연결하기 위해서는 실행 역할에 대해 다음 권한이 필요하다.
+
+- ec2:CreateNetworkInterface
+- ec2:DescribeNetworkInterfaces
+- ec2:DeleteNetworkInterface 
+
+이는 `AWSLambdaVPCAccessExecutionRole` 에 포함되어 있는데 정책을 연결해줘야 한다. 추가적으로 `AmazonElasticFileSystemClientReadWriteAccess` 권한이 필요하다.
+[ 구성 ] - [ 권한 ] - [ 실행 역할 ] - [ ~역할 확인 ] 에서 역할을 편집하는데 `AWSLambdaVPCAccessExecutionRole` 권한을 선택하고 정책 연결을 선택한다.
+
+DynamoDB 쿼리와 같이 수명이 짧은 작업을 할 경우 TCP 연결 대기에 대한 오버 헤드가 작업 자체보다 클 수 있다. 수명이 짧거나 자주 호출되지 않는 함수에 대한 연결을 재사용하려면 *TCP 연결 유지*를 사용하여 새 연결 생성을 방지한다.
+
+
+
 ### Lambda Python 패키지 이용하기
 https://pearlluck.tistory.com/518
 
@@ -97,7 +111,7 @@ https://pearlluck.tistory.com/518
 - 퍼블릭 및 프라이빗 서브넷이 있는 VPC에서 탄력적 IP를 할당한다.
 - Lambda 설정을 변경한다.
     - AWSLambdaVPCAccessExecutionRole 권한을 추가한다.
-    - private 서브넷을 선택하여 지정한다.
+    - **private 서브넷**을 선택하여 지정한다.
     - IP 테스트
 
 *(출처) https://jetalog.net/91*
