@@ -53,6 +53,7 @@ lambda는 보통 stateless 방식으로 백엔드를 구성하는데 최적화�
 
 *(참고)*
 - python 컨테이너 이미지 배포 : https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/python-image.html
+- 컨테이너 이미지로 함수 생성 : https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-images.html#gettingstarted-images-package
 
 ###  API Gateway 연동
 API와 HTTP 엔드포인트를 생성할 수 있다.
