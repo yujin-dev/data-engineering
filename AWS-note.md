@@ -158,3 +158,13 @@ SSD는 좀 더 빠르게 사용할 수 있지만 인스턴스에 제한되고, E
 
 *(출처) https://databricks.com/blog/2017/05/31/top-5-reasons-for-choosing-s3-over-hdfs.html*  
 *(참고) https://resources.useready.com/blog/s3-vs-hdfs-comparing-technologies-in-the-big-data-ecosystem/*
+
+## DB 인스턴스에 사용할 VPC 생성
+
+![](https://docs.aws.amazon.com/ko_kr/AmazonRDS/latest/UserGuide/images/con-VPC-sec-grp.png)
+
+DB 서브넷 그룹은 VPC에서 생성한 후 DB 인스턴스에 대해 지정하는 서브넷 모음이다. RDS에서 서브넷을 그룹의 해당 VPC에서 서브넷을 추가해야 작동된다.
+
+![](./img/2022-01-17-16-03-15.png)
+
+*(출처) https://docs.aws.amazon.com/ko_kr/AmazonRDS/latest/UserGuide/CHAP_Tutorials.WebServerDB.CreateVPC.html*
