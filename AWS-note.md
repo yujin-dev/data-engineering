@@ -168,3 +168,24 @@ DB 서브넷 그룹은 VPC에서 생성한 후 DB 인스턴스에 대해 지정�
 ![](./img/2022-01-17-16-03-15.png)
 
 *(출처) https://docs.aws.amazon.com/ko_kr/AmazonRDS/latest/UserGuide/CHAP_Tutorials.WebServerDB.CreateVPC.html*
+
+## Aurora cluster 
+>> Aurora Serverless DB 클러스터에는 공개적으로 액세스 가능한 엔드포인트가 없으므로 MyClusterName은 같은 VPC 내에서만 액세스할 수 있습니다.
+
+## RDS SSL/TLS로 DB Cluster 연결 암호화
+SSL( Secure Socket Layer ), TLS( Transport Layer Security  )을 사용하여 DB 클러스터에 대한 연결을 암호화할 수 있다.
+SSL/TLS 연결은 클라이언트 - DB 클러스터 간에 전송되는 데이터를 암호화하여 하나의 보안 계층을 제공한다.
+
+- 모든 인증서는 SSL/TLS 연결을 통한 다운로드로 사용 가능하다.
+- AWS RDS Proxy, Aurora serverless 사용에서 AWS Certificate Manger(ACM)의 인증서를 사용한다. Aurora serverless의 경우 RDS 인증서를 다운로드할 필요는 없다.
+
+기본적으로 Aurora Serverless는 TLS/SSL 프로토콜로 DB 클러스터 간 통신을 암호화한다.
+
+클러스터 연결 상태를 통해 Aurora serverless에 대한 연결이 TLS/SSL로 암호화되었는지 확인할 수 있다.
+
+- MySQL클라어인트에서 연결하려면 TLS/SSL을 지정해야 한다. [pem](https://www.amazontrust.com/repository/AmazonRootCA1.pem)을 다운받아 연결에 사용한다.
+- Postgresql 클라이언트에서 설정해주지 않아도 된다. `psql -h endpoint -U user`와 같이 바로 연결할 수 있다.
+
+*(출처)* 
+- https://docs.aws.amazon.com/ko_kr/AmazonRDS/latest/AuroraUserGuide/UsingWithRDS.SSL.html
+- https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless.html#aurora-serverless.tls
