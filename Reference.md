@@ -107,7 +107,7 @@ Input으로 차량 이미지를 받아 Output으로 파손과 관련된 정보�
 - Prometheus : Consul를 통해 서비스별로 live agent리스트를 찾아 직접 접근하여 metric을 수집
 - Grafana : Prometheus에서 수집한 metric을 시각화
 
-*(출처) https://medium.com/watcha/%EB%A9%80%ED%8B%B0%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EB%A1%9C%EA%B7%B8-%EB%B6%84%EC%84%9D-%ED%94%8C%EB%9E%AB%ED%8F%BC-%EA%B0%9C%EB%B0%9C%ED%95%98%EA%B8%B0-8c5f671df559*
+*(출처) https://medium.com/watcha/%EB%A9%80%ED%8B%B0%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C%EB%A5%BC-%EC%9D%B4로EC%9A%A9%ED%95%9C-%EB%A1%9C%EA%B7%B8-%EB%B6%84%EC%84%9D-%ED%94%8C%EB%9E%AB%ED%8F%BC-%EA%B0%9C%EB%B0%9C%ED%95%98%EA%B8%B0-8c5f671df559*
 
 ### LINE
 #### 쇼핑 플랫폼 
@@ -140,12 +140,14 @@ Input으로 차량 이미지를 받아 Output으로 파손과 관련된 정보�
 *참고*
 - [LINE에서 Kafka를 사용하는 방법](https://engineering.linecorp.com/ko/blog/page/13/)
 
-### Airbnb
-#### 로그 시스템
-![](https://miro.medium.com/max/1400/1*93TvjWjYDVgBw2NNNS2Kvg.png)
-
-
 ### 우아한 형제들
 사용 Tip 위주로 
-*참고*
-- [우아한 형제들](https://techblog.woowahan.com/)
+
+
+#### Aurora Mysql
+- Aurora의 CacheWarming : Aurora 페이지 캐시는 DB가 아닌 별도의 프로세스로 관리되기에 DB와 상관없이 유지된다. 결함이 발생해도 페이지 캐시가 메모리에 남아있기에 DB 재시작시 버퍼 풀이 가장 최신으로 워밍됨
+- MySQL에도 warmup을 피하기 위해 InnoDB 버퍼 풀의 디스크 페이지를 파일로 dump한 후 DB 재시작시 dump파일을 버퍼 캐시로 다시 올려 상태를 유지할 수 있음
+- Aurora Mysql은 아키텍쳐 구조 상 Cache Layer가 SQL엔진과 완전히 분리되어 warm up 생략이 가능
+
+
+*출처 [우아한 형제들](https://techblog.woowahan.com/)*
