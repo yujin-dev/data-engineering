@@ -140,9 +140,9 @@ Input으로 차량 이미지를 받아 Output으로 파손과 관련된 정보�
 *참고*
 - [LINE에서 Kafka를 사용하는 방법](https://engineering.linecorp.com/ko/blog/page/13/)
 
+
 ### 우아한 형제들
 사용 Tip 위주로 
-
 
 #### Aurora Mysql
 - Aurora의 CacheWarming : Aurora 페이지 캐시는 DB가 아닌 별도의 프로세스로 관리되기에 DB와 상관없이 유지된다. 결함이 발생해도 페이지 캐시가 메모리에 남아있기에 DB 재시작시 버퍼 풀이 가장 최신으로 워밍됨
@@ -151,3 +151,22 @@ Input으로 차량 이미지를 받아 Output으로 파손과 관련된 정보�
 
 
 *출처 [우아한 형제들](https://techblog.woowahan.com/)*
+
+### Airbnb
+#### 이벤트 수집 로깅
+로깅 이벤트는 거의 실시간으로 데이터 웨어하우스에 수집되면 많은 ETL의 소스 역할을 한다.
+
+![](https://miro.medium.com/max/1400/1*93TvjWjYDVgBw2NNNS2Kvg.png)
+
+- 이벤트는 클라이언트 및 서비스에서 Kafka로 게시된다.
+- Spark 스트리밍 작업은 Kafka에서 지속적으로 읽고 중복 제거를 위해 Hbase에 쓴다.
+- HBase에서 Hive 테이블로 매시간 덤프된다.
+
+다음과 같은 도전 과제가 있다.
+1. Spark 병렬 처리는 Kafka 파티션 수에 따라 결정 : 기존 Spark Kafka 커넥터에는 파티션:Spark 작업이 1:1 대응되어 있다.  
+2. 이벤트 볼륨 및 크기의 왜곡 
+3. 실시간에 가까운 수집 및 따라잡기 위한 여유공간
+
+이를 위해 균형 잡힌 Spark Kafka 리더를 개발하였다.
+
+*(출처) https://medium.com/airbnb-engineering/scaling-spark-streaming-for-logging-event-ingestion-4a03141d135d*
