@@ -114,3 +114,33 @@ $ adduser --disabled-password --gecos "" user  \
 
 ```
 *(출처) https://yongho1037.tistory.com/720*
+
+## Docker는 Virtual Machine이 아니다
+Docker 컨테이너는 Virtual Machine처럼 하나의 온전한 서버를 제공하는 것이 아니라 명령어를 실행하는 환경을 제공한다. 단지 명령만 실행하고 그 결과만 보여주는 기능을 수행한다.
+
+```
+69a0b675b09c   image_name          "bash"                   53 seconds ago       Exited (0) 11 seconds ago                                                                                                                                                                                     angry_robinson
+```
+`docker ps -a`를 실행하면 위와 같이 `bash` 가 실행된 것 뿐임을 알 수 있다.
+`bash`를 실행하고 결과를 출력하고 종료되어 실행되지 않은 것처럼 보인다.
+
+`docker run {image} "env"` 와 같이 마지막에 주는 인자 값은 컨테이너가 실행할 명령을 전달하는 인자다.
+```console
+$ docker run ubuntu "ls"
+bin
+boot
+dev
+etc
+home
+lib
+...
+```
+
+### bash shell에서 명령을 실행하려면
+- `i` 옵션을 이용하여 표준입력, 표준출력이 키보드와 화면을 통해 가능하도록 한다.
+- `t` 옵션을 이용하여 텍스트 기반의 터미널(TTY)을 애뮬레이션하도록 한다.
+
+### 백그라운드 실행
+`-d`로 백그라운드로 실행 후 진입하려면 `attach`하면 HostOS shell의 표준입력, 표준출력을 컨테이너에 붙이게 된다. 따라서 attatch 후 exit을 하면 컨테이너가 종료된다.
+
+*(출처) https://www.popit.kr/%EA%B0%9C%EB%B0%9C%EC%9E%90%EA%B0%80-%EC%B2%98%EC%9D%8C-docker-%EC%A0%91%ED%95%A0%EB%95%8C-%EC%98%A4%EB%8A%94-%EB%A9%98%EB%B6%95-%EB%AA%87%EA%B0%80%EC%A7%80/*
