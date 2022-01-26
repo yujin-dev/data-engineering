@@ -56,3 +56,9 @@ ML 적용하기 위한 요소는 다음과 같다.
 - 파이프라인을 빠르고 안정적이게 업데이트학 위한 자동화된 CI/CD 시스템을 사용한다.
 
 *(출처) https://cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning#mlops_level_1_ml_pipeline_automation*
+
+## 데이터 분석 및 머신러닝을 위한 파이프라인 빌드 - 예시
+*(참고) https://cloud.google.com/architecture/building-and-orchestrating-data-analytics-and-machine-learning-pipeline?skip_cache=false*
+
+## Kubeflow
+kubernetes 위에서 돌아가는 오픈 소스들을 가져다 붙여 쓸 수 있는 확장형 ML 플랫폼이다.

@@ -59,6 +59,23 @@ Input으로 차량 이미지를 받아 Output으로 파손과 관련된 정보�
     
 *(출처) https://medium.com/daangn/dynamodb-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B3%80%EA%B2%BD-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0-feat-kinesis-1733db06066*
 
+
+#### 딥러닝 추천 시스템 in production
+추천 시스템을 지속적으로 업데이트하는 파이프라인과 서빙 시스템
+- 기존 컨테이너 기반으로 작성한 추천 시스템 작업들을 Kubeflow 파이프라인으로 생성( python Kubeflow pipelines SDK )
+- 지속적인 업데이트를 위해 주기적으로 자동 실행
+
+1. 데이터 수집 : 이벤트 로그는 BigQuery에 작성
+![](https://miro.medium.com/max/1225/1*zL17WQ4xmTVL3NuJMar6ew.png)
+
+2. 전처리 : 필요한 전처리 후 빠르게 읽기 위한 tfrecords 형식으로 저장
+3. 학습 : 실제 서비스를 안정적으로 학습하기 위해 Cloud ML Engine(CMLE)을 사용
+4. Pipeline Metrics : 학습 후 evalution / prediction 
+5. Dashboard :  Kubeflow pipeline의 Output Viewer 기능으로 Tensorboard를 쉽게 실행하여 학습 결과 확인
+6. 배포 : 도커 container 를 통해 배포
+
+*(출처) https://medium.com/daangn/%EB%94%A5%EB%9F%AC%EB%8B%9D-%EC%B6%94%EC%B2%9C-%EC%8B%9C%EC%8A%A4%ED%85%9C-in-production-fa623877e56a*
+
 ### 뱅크샐러드
 #### 프로덕션 환경에서 사용하는 golang과 gRPC
 
@@ -154,7 +171,7 @@ Input으로 차량 이미지를 받아 Output으로 파손과 관련된 정보�
 
 ### Airbnb
 #### 이벤트 수집 로깅
-로깅 이벤트는 거의 실시간으로 데이터 웨어하우스에 수집되면 많은 ETL의 소스 역할을 한다.
+로깅 이벤트는 거의 실시간으로 데이터 웨어하우스에 수집되며 많은 ETL의 소스 역할을 한다.
 
 ![](https://miro.medium.com/max/1400/1*93TvjWjYDVgBw2NNNS2Kvg.png)
 
