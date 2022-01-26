@@ -95,3 +95,22 @@ Hello
 `ARG DEBIAN_FRONTEND=noninteractive` 추가할 것
 
 *(출처) https://ykarma1996.tistory.com/93*
+
+## Use sudo inside Dockerfile
+```
+FROM ubuntu:12.04
+RUN apt-get update && apt-get -y install sudo
+RUN useradd -m docker && echo "docker:docker" | chpasswd && adduser docker sudo
+USER docker
+```
+sudoers group에 docker User를 추가해주면 되는데 위와 같이 비밀번호를 입력해야 하므로 이미지 빌드시 오류남
+
+```console
+$ apt-get update && apt-get install -y sudo
+$ adduser --disabled-password --gecos "" user  \
+    && echo 'user:user' | chpasswd \
+    && adduser user sudo \
+    && echo 'user ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+```
+*(출처) https://yongho1037.tistory.com/720*
