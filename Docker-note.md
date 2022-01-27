@@ -137,6 +137,8 @@ lib
 ```
 
 ### bash shell에서 명령을 실행하려면
+`docker run -it --name {container_name} {image_name}`
+
 - `i` 옵션을 이용하여 표준입력, 표준출력이 키보드와 화면을 통해 가능하도록 한다.
 - `t` 옵션을 이용하여 텍스트 기반의 터미널(TTY)을 애뮬레이션하도록 한다.
 
