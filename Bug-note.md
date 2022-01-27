@@ -214,3 +214,56 @@ Clearing orphaned inode 1180978 (uid=1000, gid=1000, mode=0100600, size=0)
 
 ### AWS Lambda OSError: [Errno 30] Read-only file system: './cache'
 `/tmp`에서만 write이 가능하다고 함
+
+### 우분투에서 mysqlclient 설치 시 에러가 발생 - egg_info 관련 에러
+```
+Command "python setup.py egg_info" failed with error code 1 in /tmp/pip-install-zbw18e9_/mysqlclient/
+```
+`sudo apt-get install libmysqlclient-dev`로 해결
+
+### Rust 자동 설치
+*Add option for automatic installation*
+
+```console
+$ curl https://sh.rustup.rs -sSf | sh -s -- -y
+```    
+- `sh -s`는 sh의 stdin을 실행한다.
+```console
+    -s stdin         Read commands from standard input (set automatically if no file arguments are present).  This option has no effect when set after the shell has already started running (i.e. with set).
+
+```
+- `--`는 다음 나올 arguments가 options이 아님을 표시해준다.
+```console
+    set [{ -options | +options | -- }] arg ...
+                The set command performs three different functions.
+
+                With no arguments, it lists the values of all shell variables.
+
+                If options are given, it sets the specified option flags, or clears them as described in the section called Argument List Processing.  As a special case, if the option is -o or +o and no argument is supplied, the shell prints the settings of all its options.  If the option
+                is -o, the settings are printed in a human-readable format; if the option is +o, the settings are printed in a format suitable for reinput to the shell to affect the same option settings.
+
+                The third use of the set command is to set the values of the shell's positional parameters to the specified args.  To change the positional parameters without changing any options, use “--” as the first argument to set.  If no args are present, the set command will clear
+                all the positional parameters (equivalent to executing “shift $#”.)
+```
+
+### sudo apt-get update 시 NO_PUBKEY 에러나는 문제
+
+```console
+$ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys <PUBKEY>
+$ sudo apt-get update
+```
+
+*(출처) https://eehoeskrap.tistory.com/454*
+
+### Python 3.8 이하인 경우의 문법 오류
+아래와 같인 대입 표현식은 변수에 값을 대입하는 기능으로 python 3.8에서 새롭게 추가된 것이다.( 그 이하 버전에서는 오류남)
+```
+if (n := len(a)) > 10: 
+  File "<stdin>", line 1
+    if (n := len(a)) > 10:
+          ^
+SyntaxError: invalid syntax
+```
+
+*(출처) https://docs.python.org/ko/3/whatsnew/3.8.html*
+
