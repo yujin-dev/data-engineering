@@ -296,3 +296,8 @@ export DOCKER_HOST=tcp://localhost:1234
 을 추가하여 연동시킨다.
 
 *(출처) https://onedevblog.com/how-to-fix-a-permission-denied-when-using-dockeroperator-in-airflow/*
+
+### `apt-get: command not found` in AWS python docker image 
+OS가 centOS이기에 `apt-get` 대신 `yum`을 사용해야 
+
+*(출처) https://www.reddit.com/r/aws/comments/mu3jtf/working_with_aws_lambda_python_from_docker_images/*        
