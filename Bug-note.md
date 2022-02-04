@@ -267,3 +267,32 @@ SyntaxError: invalid syntax
 
 *(출처) https://docs.python.org/ko/3/whatsnew/3.8.html*
 
+### permission denied when using DockerOperator in Airflow
+```
+  File "/home/airflow/.local/lib/python3.8/site-packages/docker/transport/unixconn.py", line 43, in connect
+    sock.connect(self.unix_socket)
+PermissionError: [Errno 13] Permission denied
+```
+
+아래와 같이 airflow에서 DockerOperator 위주로 적용할 때 오류가 발생한다.
+```python
+DockerOperator(
+    docker_url='unix://var/run/docker.sock',
+    ...
+)
+```
+1. 바운드하려는 `/var/run/docker.sock`의 권한을 바꾸거나 
+2. 해당 파일을 TCP로 통신이 가능하도록 wrapping한다.
+
+```
+docker run -d -v /var/run/docker.sock:/var/run/docker.sock -p 127.0.0.1:1234:1234 bobrik/socat TCP-LISTEN:1234,fork UNIX-CONNECT:/var/run/docker.sock
+export DOCKER_HOST=tcp://localhost:1234
+```
+`Dockerfile`에서는 아래와 같이
+```yaml
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+```
+을 추가하여 연동시킨다.
+
+*(출처) https://onedevblog.com/how-to-fix-a-permission-denied-when-using-dockeroperator-in-airflow/*
