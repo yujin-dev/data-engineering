@@ -231,3 +231,27 @@ output {
     logger.setLevel(logging.INFO)
     logger.addHandler(logstash.TCPLogstashHandler(config["host"], config["port"], version=1))
 ```
+
+## ELK vs. EFK
+
+Fluentd가 뜨는 이유는 CNCF(Cloud Native Computing Foundation)의 일부이기에 kubernetes, Prometheus, OpenTracing과 같은 CNCF 호스팅 프로젝트들과 매우 잘 어울리기 때문이다.
+
+### 이벤트 라우팅
+Logstash는 if-else 조건에 기반에 이벤트가 라우팅되는데, Fluentd는 태그에 기반해 라우팅된다.
+
+### 전송
+Logstash는 메모리 상 큐에 고정된 크기(20)의 이벤트를 갖고 있으며 재시작 시 Redis, Kafka와 같은 외부 큐에 의존한다.
+Fluentd는 메모리 또는 디스크상의 버퍼 시스템을 갖고 있다.
+둘다 10000개 이상의 이벤트를 문제없이 지속적으로 지원 가능하다.
+
+### 로그 수집
+Fluentd는 docker에 전용 로깅 드라이버가 내장되어 있다.
+로그는 STDOUT에서 Fluentd 서비스로 직접 전송되며 추가 로그 파일이나 저장소가 필요없다.
+Logstash는 STDOUT 로그가 docker 로그에 파일로 기록된다. 이후 로그 파일을 filebeat와 같은 플러그인으로 읽어서 전송해야 한다.
+
+### 로그 파싱
+Fluentd에는 json, regrex, csv 등의 표준 내장 파서와 grok와 같은 외부 파서가 있고 Logstash에는 더 많은 플러그인이 있다.
+
+*(출처)*
+- https://smoh.tistory.com/365
+- (원본) https://www.techmanyu.com/logstash-vs-fluentd-which-one-is-better-adaaba45021b
