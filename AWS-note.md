@@ -101,8 +101,6 @@ lambda 서비스를 VPC에 연결하기 위해서는 실행 역할에 대해 다
 
 DynamoDB 쿼리와 같이 수명이 짧은 작업을 할 경우 TCP 연결 대기에 대한 오버 헤드가 작업 자체보다 클 수 있다. 수명이 짧거나 자주 호출되지 않는 함수에 대한 연결을 재사용하려면 *TCP 연결 유지*를 사용하여 새 연결 생성을 방지한다.
 
-
-
 ### Lambda Python 패키지 이용하기
 https://pearlluck.tistory.com/518
 
@@ -117,6 +115,33 @@ https://pearlluck.tistory.com/518
 
 *(출처) https://jetalog.net/91*
 
+## 컨테이너 이미지로 lambda 함수 배포
+보통 lambda용 AWS 기본 이미지를 이용하거나 커뮤니티, 프라이빗 이미지를 사용하느 경우 lambda와의 호환을 위해 [런타임 인터페이스 클라이언트](https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/runtimes-images.html#runtimes-api-client)를 추가해야 한다.
+
+*(출처) https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/python-image.html*
+
+AWS Lambda Runtime Interface Emulator(RIE)는 
+- 로컬에서 컨테이너 이미지로 빌드한 lambda를 테스트할 수 있는 Lambda 런타임 API의 proxy이다.
+- HTTP요청을 JSON 이벤트로 변환시켜 컨테이너 이미지의 lambda 함수에 전달하 경량 웹 서버이다.
+
+Lambda용 AWS 기본 이미지에는 포함되어 있고 커뮤니티나 프라이빗 이미지를 사용하는 경우에도 빌드하여 테스트가 가능하다.
+
+1. Lambda AWS 기본 이미지를 사용하면 `docker run -p 8000:8000 {function_name}:lastest .` 와 같이 테스트할 수 있다.
+    `curl -XPOST "http://localhost:9000/2015-03-31/functions/{function_name}/invocations" -d '{}'` 와 같이 엔드포인트에 이벤트를 전송하여 반환되는 응답을 확인하여 테스트한다.
+2. (이미지에 RIE 추가) 런타임 API가 있음을 확인하여 있으면 런타임 인터페이스 클라이언트를, 없으면 에뮬레이터를 실행한다.
+```bash
+#!/bin/sh
+if [ -z "${AWS_LAMBDA_RUNTIME_API}" ]; then
+  exec /usr/local/bin/aws-lambda-rie /usr/local/bin/python -m awslambdaric $@
+else
+  exec /usr/local/bin/python -m awslambdaric $@
+fi     
+```
+    에뮬레이터 패키지를 다운받아 설치하고 Dockerfile을 수정한다. 
+
+3. (이미지에 RIE 추가 없이 실행)
+
+*(출처) https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/images-test.html*
 
 ## [ AWS RDS 읽기 요청을 분산 참고 ]
 
