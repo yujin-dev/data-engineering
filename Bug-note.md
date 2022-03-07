@@ -300,4 +300,9 @@ export DOCKER_HOST=tcp://localhost:1234
 ### `apt-get: command not found` in AWS python docker image 
 OS가 centOS이기에 `apt-get` 대신 `yum`을 사용해야 
 
-*(출처) https://www.reddit.com/r/aws/comments/mu3jtf/working_with_aws_lambda_python_from_docker_images/*        
+*(출처) https://www.reddit.com/r/aws/comments/mu3jtf/working_with_aws_lambda_python_from_docker_images/*  
+
+
+### docker error in crontab: `the input device is not a TTY`
+`docker run --rm -it -v`와 같이 docker 실행을 포함한 shell script를 작성하여 crontab으로 예약 실행하면 오류가 발생한다.
+`-i`만 부여해서 적용한다.
