@@ -581,5 +581,25 @@ locktype       | relation  |       mode     | tid  | pid  | granted
 
 ## The Internals of PostgreSQL
 
-*참고*
-- https://www.interdb.jp/pg/pgsql01.html
+> 참고 : https://www.interdb.jp/pg/pgsql01.html
+
+### Architecture
+PostgreSQL은 client-server 구조이다. Database 파일에 직접 접근하지 않고 Server에 요청하여 데이터를 받는 방식이다.  
+server는 각 요청마다 하나의 프로세스를 실행시킨다. threading을 사용하지 않는다. Instance는 server에서 생성한 프로세스 그룹으로 Shared Memory에서 클라이언트 요청을 처리한다. 
+Postmaster라는 단일 프로세스에서 Instance가 시작된다. Instance는 configuration files를 로드하고, Shared Memory를 할당하여 Background Writer, Checkpointer, WAL Writer, WAL Archiver, Autovacuum, Statistics Collector, Logger같은 작업을 실행한다. 
+
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/PostgreSQL%27s_Internal_Architecture.svg/1350px-PostgreSQL%27s_Internal_Architecture.svg.png)
+
+client에서 요청한 SELECT, UPDATE 같은 I/O-activities는 디스크에서 바로 처리되지 않는다. file page에 대한 **Shared Memory, 즉 캐시에서 동작**한다.
+
+*dirty page*가 생기면 (file page 내용이 바뀌면) 디스크에 write된다.  
+1. *WAL Writer* process ON : 우선 *WAL record( 바뀌기 전과 후에 대한 차이점 )*가 생성되어 Shared Memory에서 저장된다. `COMMIT`동안 WAL Writer process는 WAL file에 기록을 추가한다. **모든 dirty page에서 생성된 WAL record는 Memory에서 디스크로 이전된다.**
+2. *Background Writer* process, *Checkpointer* process ON : Memory의 *dirty buffers*를 파일로 변환한다. Checkpointer process는 기존의 모든 dirty buffer, WAL record, Checkpoint record를 디스크에 쓰고(flush) `Checkpoint`를 생성한다. `Checkpoint`는 Checkpoint 이전의 모든 dirty page를 heap, index files에 동기화하는 트랜잭션 과정에서의 포인트를 의미한다.  
+
+*Autovacuum* process는 heap과 index files에서 더이상 사용하지 않는 오래된 record를 `finally deleted`로 표시한다. 해당 records가 차지하고 있던 공간을 확보하게 된다.
+
+
+
+
+
+
