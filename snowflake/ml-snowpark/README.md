@@ -24,14 +24,23 @@ snowflake_conn_prop = {
 ```
 
 
-### setup
+### setup environment
 ```console
 $ conda env create -f jupyter_env.yml
 $ conda activate snowpark-python
 $ python -m ipykernel install --user --name=snowpark-python
 ```
 
-### ML pipeline
+### enable anaconda packages in snowflake
+[Using Third-Party Packages from Anaconda](https://docs.snowflake.com/en/developer-guide/udf/python/udf-python-packages.html#using-third-party-packages-from-anaconda)
+
+### Build ML pipeline with snowpark
 1. load-data
 2. eda
 3. ml-pipeline
+
+## Results 
+
+tables
+
+![](tables.png)
