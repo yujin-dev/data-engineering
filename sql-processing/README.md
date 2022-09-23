@@ -23,7 +23,7 @@ SQL이 느린 이유는 보통 **디스크 I/O 때문**이다. I/O가 처리되�
 ## 데이터 저장 구조
 테이블은 여러 개의 블록(페이지)단위로 분할되어 저장되는데 disk space 관리는 page에 대한 할당/비할당, read/write 와 연관된다.  
 
-![Untitled](../png/Untitled%209.png)
+![Untitled](../_img/Untitled%209.png)
 
 - Block : 데이터를 읽고 쓰는 단위로 가장 작은 논리적 I/O 단위이다. 블록의 크기는 기본 8kb이고, 2kb ~ 32kb이다. 블록은 각 Column의 값이 기입된 Rows로 구성된다.
 - Extent : 공간을 확장하는 단위로 연속된 블록의 집합이다.
@@ -40,7 +40,7 @@ SQL이 느린 이유는 보통 **디스크 I/O 때문**이다. I/O가 처리되�
 ### Buffer Management
 buffer cache는 RAM에 저장되는 구조이다. buffer cache를 통해 메모리와 디스크에 접근하는 시간을 줄일 수 있다.
 
-![Untitled](../png/Untitled%207.png)
+![Untitled](../_img/Untitled%207.png)
 
 - Buffer Pool에서 page를 저장할 때 free frame이 있으면 해당 공간에 저장하고, 없으면 LRU에 의해 오래된 frame을 unpin하여 데이터를 저장한다. 
 - *pin*은 page를 사용하는 사용자가 있음을 알려주기 위한 수단인데 pin_count를 통해 표시한다. page 사용이 끝나면 unpin을 해준다. 
@@ -55,21 +55,21 @@ buffer cache는 RAM에 저장되는 구조이다. buffer cache를 통해 메모�
 
 Record를 표시하는데 주로 사용하는 방식은 Variable Length이다. 다음 2가지 방식이 있다.
 
-![Untitled](../png/Untitled%208.png)
+![Untitled](../_img/Untitled%208.png)
 
 - Option 1 : 특정 문자( $ )로 field를 구분한다.
 - Option 2 : 각 필드에 대한 offset를 저장하여 직접 접근이 가능하도록 한다. 
 
 ## Sequential Access vs. Random Access
 
-![Untitled](../png/Untitled%2012.png)
+![Untitled](../_img/Untitled%2012.png)
 
 *Sequential Access*란 논리적, 물리적으로 **연결된 순서에 따라 차례대로 블록을 읽어들이는** 방식이다. 
 인덱스 Reaf 블록은 앞뒤를 가리키는 주소값으로 연결되어 있기에 이를 이용하여 순차적으로 스캔한다(Multi Block I/O 방식). Table Full Scan에서 사용하는 방식이다.
 
 *Random Access*란 논리적, 물리적 순서가 아닌 레코드 하나를 위기 위해 **한 블록씩 접근**하는 방식이다(Single Block I/O 방식). Index Scan에서 사용하는 방식이다. Index Scan에서는 아래와 같이 테이블의 행을 가리키는 ROWID를 확인하여 블록에 액세스한다.
 
-![Untitled](../png/Untitled%2011.png)
+![Untitled](../_img/Untitled%2011.png)
 
 랜덤 액세스는 다음과 같이 있다.
 - 확인 랜덤 액세스 : `WHERE`조건에서 컬럼이 인덱스에 존재하지 않아 테이블을 액세스한다.

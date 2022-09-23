@@ -2,7 +2,7 @@
 [Getting Started with Snowpark Python](https://quickstarts.snowflake.com/guide/getting_started_with_snowpark_python/index.html?index=..%2F..index#0)에 따라 구현
 
 ## Snowpark-python
-![](https://quickstarts.snowflake.com/guide/getting_started_with_snowpark_python/img/b27f1d16420e6ea7.png)
+![](https://quickstarts.snowflake.com/guide/getting_started_with_snowpark_python/_img/b27f1d16420e6ea7.png)
 
 ## Use-Case
 Predicting Customer Churn: 고객이타률을 줄이기 위한 솔루션을 제공
