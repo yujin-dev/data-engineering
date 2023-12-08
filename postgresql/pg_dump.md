@@ -35,3 +35,13 @@ Password for user postgres:
  166857
 (1 row)
 ```
+
+## Directly copy data
+```bash
+pg_dump -h $SOURCE_SERVER -p 5432 -U postgres -d my_database --data-only | psql -h $TARGET_SERVER -p 5432 -U postgres -d my_database
+```
+
+---
+
+## Reference
+- [Genrating Postgres dump and saving to another server](https://stackoverflow.com/questions/66356435/genrating-postgres-dump-and-saving-to-another-server)
