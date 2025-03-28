@@ -63,6 +63,57 @@ B->A.topics = .*
     sync.group.offsets.enabled = true
     ```
     
+**MirrorMaker2에서는 오프셋 어떻게 동기화?**
+
+1. **OffsetSync 기록**
+
+`mm2-offset-syncs.A.internal` 를 dc2에서 기록
+
+- source ↔ target offset 간 매핑을 기록
+
+```json
+{
+  "topic": "logs",
+  "partition": 1,
+  "upstream_offset": 105,
+  "downstream_offset": 103
+}
+```
+
+2. **Checkpoint 기록**
+
+`A.checkpoints.internal` 를 dc2에서 기록
+
+- 특정 시점에 consumer group의 offset을 source에서 읽고, 해당 offset이 target에서 어디까지 처리되었는지 매핑해서 기록
+
+```bash
+./bin/kafka-console-consumer.sh --bootstrap-server A_host1:9092 \
+  --topic mm2-offset-syncs.A.internal \
+  --formatter org.apache.kafka.connect.mirror.formatters.OffsetSyncFormatter \
+  --from-beginning
+ 
+OffsetSync{topicPartition=new-topic-0, upstreamOffset=30, downstreamOffset=30}
+
+./bin/kafka-console-consumer.sh --bootstrap-server A_host1:9092 \
+  --topic A.checkpoints.internal \
+  --formatter org.apache.kafka.connect.mirror.formatters.OffsetSyncFormatter \
+  --from-beginning
+ 
+ OffsetSync{topicPartition=mm-tester-1663864, upstreamOffset=0, downstreamOffset=562949953421312}
+```
+
+- 소스 클러스터의 mm-tester 토픽 1663864 파티션에서 offset 0에 있던 메시지 → 
+타겟 클러스터의 같은 토픽/파티션에 offset 562949953421312로 복제됨
+
+`562949953421312` = `0x2000000000000`
+
+→ MM2는 내부적으로 복제된 메시지 offset을 가짜 오프셋으로 활용
+
+이렇게 큰 수를 사용하는 이유는:
+
+- 복제된 메시지와 실제 타겟 클러스터의 native 메시지를 구분
+- 일부 MM2 설정에서 logical offset space를 따로 유지하기 위해
+- offset 공간이 겹치지 않게 하려는 목적
 
 오프셋 미러링 흐름
 
@@ -363,6 +414,7 @@ active - standby 구성 시
 - failover이 발생하는 동안 메시지 유실이 발생할 수 있음
 - DCI 단절 일어나면 단방향 미러링 불가, 다른 dc의 클라이언트에서는 active 클러스터에 접속하지 못함
 - 미러링과 오프셋 복제가 간단하나 failover에 대한 시나리오 필요
+
 
 ---
 
